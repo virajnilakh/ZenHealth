@@ -25,7 +25,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".Register" />
         <activity android:name=".Onboarding" />
-        <activity android:name=".bloodGlucose"></activity>
+        <activity android:name=".BloodGlucose"></activity>
     </application>
 
 </manifest>
