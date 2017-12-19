@@ -3,12 +3,5 @@
         id="@+id/tab_favorites"
         icon="@drawable/ic_home"
         title="Favorites" />
-    <tab
-        id="@+id/tab_nearby"
-        icon="@drawable/ic_home"
-        title="Nearby" />
-    <tab
-        id="@+id/tab_friends"
-        icon="@drawable/ic_home"
-        title="Friends" />
+
 </tabs>
