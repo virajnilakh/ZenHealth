@@ -8,8 +8,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
-public class Navigation extends AppCompatActivity {
+public class Navigation extends AppCompatActivity implements EditTextDialogFragment.EditTextDialogFragmentListener {
+
+    public static final String DIALOG_TAG = "dialog_tag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,4 +78,14 @@ public class Navigation extends AppCompatActivity {
             return false;
         }
     };
+
+    public void enterBGL(View view) {
+        EditTextDialogFragment editTextDialogFragment=EditTextDialogFragment.newInstance("Enter blood glucode level:","");
+        editTextDialogFragment.show(getSupportFragmentManager(), DIALOG_TAG);
+    }
+
+    @Override
+    public void onEditTextDialogFragmentOK(String newValue, String tag) {
+        System.out.println("Value:"+newValue);
+    }
 }
