@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
+    private boolean loggedIn=false;
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "virajnilakh220@gmail.com:12345", "bar@example.com:world"
     };
@@ -320,11 +321,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                    boolean ans= pieces[1].equals(mPassword);
+                    if(ans==true){
+                        loggedIn=true;
+                    }
+                    return ans;
                 }
             }
-            Intent myIntent = new Intent(LoginActivity.this, Register.class);
-            startActivity(myIntent);
+
             // TODO: register the new account here.
             return true;
         }
@@ -334,11 +338,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
+            if (success && loggedIn) {
                 Intent myIntent = new Intent(LoginActivity.this, Navigation.class);
                 startActivity(myIntent);
 
                 //finish();
+            }else if(success){
+                Intent myIntent = new Intent(LoginActivity.this, Register.class);
+                startActivity(myIntent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
