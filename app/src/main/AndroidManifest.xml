@@ -13,8 +13,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".HomeActivity">
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,12 +21,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-
         <activity android:name=".MainActivity" />
         <activity android:name=".Register" />
         <activity android:name=".Onboarding" />
         <activity android:name=".BloodGlucose" />
-
+        <activity android:name=".ActivityPage"></activity>
     </application>
 
 </manifest>
