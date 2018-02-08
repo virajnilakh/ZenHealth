@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "viraj@gmail.com:12345", "bar@example.com:world"
+            "virajnilakh220@gmail.com:12345", "bar@example.com:world"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -334,7 +334,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Intent myIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                Intent myIntent = new Intent(LoginActivity.this, Navigation.class);
                 startActivity(myIntent);
 
                 //finish();
