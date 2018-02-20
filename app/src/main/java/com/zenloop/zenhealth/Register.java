@@ -45,10 +45,7 @@ public class Register extends AppCompatActivity {
                 new Continuation<String, Task<Document>>() {
                     @Override
                     public Task<Document> then(@NonNull Task<String> task) throws Exception {
-                        final Document updateDoc = new Document(
-                                "owner_id",
-                                task.getResult()
-                        );
+                        final Document updateDoc = new Document("owner_id",task.getResult());
 
                         /*updateDoc.put("fname", fname.getText());
                         updateDoc.put("lname", lname.getText());
@@ -58,7 +55,7 @@ public class Register extends AppCompatActivity {
                         updateDoc.put("lname", lnamestr);
                         updateDoc.put("email", emailstr);
                         updateDoc.put("password", passwordstr);
-                        return db.getCollection("Users").updateOne(null, updateDoc, true);
+                        return db.getCollection("Users").insertOne(updateDoc);
                     }
                 }
         ).continueWithTask(new Continuation<Document, Task<List<Document>>>() {
