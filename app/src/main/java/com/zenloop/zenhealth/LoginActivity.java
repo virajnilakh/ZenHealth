@@ -3,6 +3,7 @@ package com.zenloop.zenhealth;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +31,15 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.mongodb.stitch.android.StitchClient;
+import com.mongodb.stitch.android.auth.anonymous.AnonymousAuthProvider;
+import com.mongodb.stitch.android.services.mongodb.MongoClient;
+
+import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +61,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * TODO: remove after connecting to a real authentication system.
      */
     private boolean loggedIn=false;
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "virajnilakh220@gmail.com:12345", "bar@example.com:world"
-    };
+    private static final List<String> DUMMY_CREDENTIALS = new ArrayList<String>();
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -88,12 +97,44 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                List<String> userNamePass=new ArrayList<>();
+                fillUserNamePass(userNamePass,view);
                 attemptLogin();
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void fillUserNamePass(List<String> userNamePass,View view) {
+        final StitchClient stitchClient = new StitchClient(view.getContext(), "zenhealth-ycmlc");
+        final MongoClient mongoClient = new MongoClient(stitchClient, "mongodb-atlas");
+        final MongoClient.Database db = mongoClient.getDatabase("ZenHealth");
+        final TextView email=(TextView) findViewById(R.id.email);
+        final String emailstr=email.getText().toString();
+        stitchClient.logInWithProvider(new AnonymousAuthProvider()).continueWithTask(new Continuation<String, Task<List<Document>>>() {
+            @Override
+            public Task<List<Document>> then(@NonNull Task<String> task) throws Exception {
+                Document doc=new Document("email",emailstr);
+                return db.getCollection("Users").find(doc,
+                        100
+                );
+            }
+        }).addOnCompleteListener(new OnCompleteListener<List<Document>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Document>> task) {
+                if (task.isSuccessful()) {
+                    List<Document> list=task.getResult();
+                    Document doc=list.get(0);
+                    Object email=doc.get("email");
+                    Object pass=doc.get("password");
+                    String userNamePass=email.toString()+":"+pass.toString();
+                    DUMMY_CREDENTIALS.add(userNamePass);
+                    return;
+                }
+            }
+        });
     }
 
     private void populateAutoComplete() {
@@ -319,7 +360,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
+                  if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
                     boolean ans= pieces[1].equals(mPassword);
                     if(ans==true){
@@ -332,6 +373,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: register the new account here.
             return true;
         }
+
 
         @Override
         protected void onPostExecute(final Boolean success) {
