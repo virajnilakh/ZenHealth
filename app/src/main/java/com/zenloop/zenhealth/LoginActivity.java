@@ -126,11 +126,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onComplete(@NonNull Task<List<Document>> task) {
                 if (task.isSuccessful()) {
                     List<Document> list=task.getResult();
-                    Document doc=list.get(0);
-                    Object email=doc.get("email");
-                    Object pass=doc.get("password");
-                    String userNamePass=email.toString()+":"+pass.toString();
-                    DUMMY_CREDENTIALS.add(userNamePass);
+                    if(list.size()!=0){
+                        Document doc=list.get(0);
+                        Object email=doc.get("email");
+                        Object pass=doc.get("password");
+                        String userNamePass=email.toString()+":"+pass.toString();
+                        DUMMY_CREDENTIALS.add(userNamePass);
+                    }
+
                     return;
                 }
             }
