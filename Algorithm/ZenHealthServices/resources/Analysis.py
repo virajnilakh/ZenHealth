@@ -80,6 +80,11 @@ class Analysis():
         X_test = X_test.drop('label', 1)
         X_test['label'] = best_preds
         results.append(X_test)
+        #convert fooditem nos into string
+        X_d = le.inverse_transform(results['fooditem'])
+        print(X_d)
+        results = results.drop('fooditem', 1)
+        results['fooditem'] = X_d
         return results
 
 
