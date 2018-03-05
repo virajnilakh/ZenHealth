@@ -74,13 +74,16 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
 
                     transaction.commit();
                     return true;
+                case R.id.add_bgl:
+                    EditTextDialogFragment editTextDialogFragment=EditTextDialogFragment.newInstance("Enter blood glucose level:","");
+                    editTextDialogFragment.show(getSupportFragmentManager(), DIALOG_TAG);
             }
             return false;
         }
     };
 
     public void enterBGL(View view) {
-        EditTextDialogFragment editTextDialogFragment=EditTextDialogFragment.newInstance("Enter blood glucode level:","");
+        EditTextDialogFragment editTextDialogFragment=EditTextDialogFragment.newInstance("Enter blood glucose level:","");
         editTextDialogFragment.show(getSupportFragmentManager(), DIALOG_TAG);
     }
 
