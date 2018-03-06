@@ -20,5 +20,9 @@
         android:id="@+id/add_bgl"
         android:icon="@drawable/ic_opacity_black_24dp"
         android:title="@string/add_bgl" />
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_exit_to_app_black_24dp"
+        android:title="@string/logout" />
 
 </menu>

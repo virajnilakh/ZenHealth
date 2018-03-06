@@ -38,11 +38,15 @@ import com.google.android.gms.tasks.Task;
 import com.mongodb.stitch.android.StitchClient;
 import com.mongodb.stitch.android.auth.anonymous.AnonymousAuthProvider;
 import com.mongodb.stitch.android.services.mongodb.MongoClient;
+import com.zenloop.zenhealth.data.User;
 
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import io.realm.Realm;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -72,39 +76,48 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        Realm.init(this);
+        realm=Realm.getDefaultInstance();
+        User user=realm.where(User.class).findFirst();
+        if(user!=null){
+            Intent myIntent = new Intent(LoginActivity.this, Navigation.class);
+            startActivity(myIntent);
+        }else{
+            mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+            populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
+            mPasswordView = (EditText) findViewById(R.id.password);
+            mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                    if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                        attemptLogin();
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<String> userNamePass=new ArrayList<>();
-                fillUserNamePass(userNamePass,view);
-                attemptLogin();
-            }
-        });
+            Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+            mEmailSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    List<String> userNamePass=new ArrayList<>();
+                    fillUserNamePass(userNamePass,view);
+                    attemptLogin();
+                }
+            });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+        }
     }
 
     private void fillUserNamePass(List<String> userNamePass,View view) {
@@ -384,6 +397,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success && loggedIn) {
+                try {
+                    realm.beginTransaction();
+                    realm.copyToRealm(new User(DUMMY_CREDENTIALS.get(0).split(":")[0]));
+                    realm.commitTransaction();
+                } catch (Exception e) {
+                    realm.cancelTransaction();
+                    e.printStackTrace();
+                }
                 Intent myIntent = new Intent(LoginActivity.this, Navigation.class);
                 startActivity(myIntent);
 

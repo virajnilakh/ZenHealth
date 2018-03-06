@@ -10,10 +10,15 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.zenloop.zenhealth.data.User;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 public class Navigation extends AppCompatActivity implements EditTextDialogFragment.EditTextDialogFragmentListener {
 
     public static final String DIALOG_TAG = "dialog_tag";
-
+    private Realm realm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +82,16 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
                 case R.id.add_bgl:
                     EditTextDialogFragment editTextDialogFragment=EditTextDialogFragment.newInstance("Enter blood glucose level:","");
                     editTextDialogFragment.show(getSupportFragmentManager(), DIALOG_TAG);
+                case R.id.logout:
+                    Realm.init(getBaseContext());
+                    realm=Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    RealmResults<User> result = realm.where(User.class).findAll();
+                    result.deleteAllFromRealm();
+                    realm.commitTransaction();
+                    Intent myIntent = new Intent(Navigation.this, LoginActivity.class);
+                    startActivity(myIntent);
+
             }
             return false;
         }
