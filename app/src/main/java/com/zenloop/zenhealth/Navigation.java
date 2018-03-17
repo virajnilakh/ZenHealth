@@ -23,6 +23,7 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+
         if (findViewById(R.id.fragment_container) != null) {
 
             // However, if we're being restored from a previous state,
@@ -54,8 +55,13 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            View floatingButton = findViewById(R.id.floatingActionButton);
+            View sendPDF = findViewById(R.id.sendPDFButton);
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    floatingButton.setVisibility(View.VISIBLE);
+                    sendPDF.setVisibility(View.GONE);
+
                     transaction = getSupportFragmentManager().beginTransaction();
                     HomeFragment homeFragment=new HomeFragment();
                     transaction.replace(R.id.fragment_container, homeFragment);
@@ -64,6 +70,9 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
                     transaction.commit();
                     return true;
                 case R.id.navigation_dashboard:
+                    floatingButton.setVisibility(View.GONE);
+                    sendPDF.setVisibility(View.GONE);
+
                     transaction = getSupportFragmentManager().beginTransaction();
                     OnboardingFragment onboardingFragment=new OnboardingFragment();
                     transaction.replace(R.id.fragment_container, onboardingFragment);
@@ -72,6 +81,8 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
                     transaction.commit();
                     return true;
                 case R.id.navigation_notifications:
+                    floatingButton.setVisibility(View.VISIBLE);
+                    sendPDF.setVisibility(View.VISIBLE);
                     transaction = getSupportFragmentManager().beginTransaction();
                     ActivityFragment activityFragment=new ActivityFragment();
                     transaction.replace(R.id.fragment_container, activityFragment);
@@ -80,9 +91,16 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
                     transaction.commit();
                     return true;
                 case R.id.add_bgl:
+
+
                     EditTextDialogFragment editTextDialogFragment=EditTextDialogFragment.newInstance("Enter blood glucose level:","");
                     editTextDialogFragment.show(getSupportFragmentManager(), DIALOG_TAG);
+                    return true;
+
                 case R.id.logout:
+                    floatingButton.setVisibility(View.GONE);
+                    sendPDF.setVisibility(View.GONE);
+
                     Realm.init(getBaseContext());
                     realm=Realm.getDefaultInstance();
                     realm.beginTransaction();
@@ -91,6 +109,8 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
                     realm.commitTransaction();
                     Intent myIntent = new Intent(Navigation.this, LoginActivity.class);
                     startActivity(myIntent);
+                    return true;
+
 
             }
             return false;
