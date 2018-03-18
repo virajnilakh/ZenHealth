@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.zenloop.zenhealth.data.User;
 
@@ -125,5 +128,19 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
     @Override
     public void onEditTextDialogFragmentOK(String newValue, String tag) {
         System.out.println("Value:"+newValue);
+    }
+
+    public void enableList(View view) {
+        View food= findViewById(R.id.foodText);
+        food.setVisibility(View.GONE);
+        View spinner= findViewById(R.id.planets_spinner);
+        spinner.setVisibility(View.VISIBLE);
+    }
+
+    public void disableButtons(View view) {
+        View acceptButton=findViewById(R.id.acceptButton);
+        View denyButton=findViewById(R.id.denyButton);
+        acceptButton.setVisibility(View.GONE);
+        denyButton.setVisibility(View.GONE);
     }
 }
