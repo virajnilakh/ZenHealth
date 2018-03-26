@@ -31,8 +31,10 @@
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -118,6 +120,14 @@
                             android:padding="5dp"
                             app:srcCompat="@drawable/lunch" />
 
+                        <AutoCompleteTextView
+                            android:id="@+id/planets_spinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:visibility="gone"
+                            android:text="Enter food" />
+
                         <TextView
                             android:id="@+id/foodText"
                             android:layout_width="wrap_content"
@@ -126,11 +136,12 @@
                             android:layout_weight="1"
                             android:text="Add Lunch"
                             android:textColor="@android:color/background_light" />
-                        <Spinner
+
+                        <!--<Spinner
                             android:id="@+id/planets_spinner"
                             android:layout_width="wrap_content"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />-->
 
                     </LinearLayout>
 
