@@ -338,6 +338,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
+    public void register(View view) {
+        Intent myIntent = new Intent(LoginActivity.this, Register.class);
+        startActivity(myIntent);
+    }
+
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -410,8 +415,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 //finish();
             }else if(success){
-                Intent myIntent = new Intent(LoginActivity.this, Register.class);
-                startActivity(myIntent);
+                TextView invalidText=(TextView) findViewById(R.id.invalidCredentials);
+                invalidText.setVisibility(View.VISIBLE);
+                /*mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.requestFocus();*/
+                /*Intent myIntent = new Intent(LoginActivity.this, Register.class);
+                startActivity(myIntent);*/
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

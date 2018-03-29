@@ -58,11 +58,15 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+/*
             View floatingButton = findViewById(R.id.floatingActionButton);
+*/
             View sendPDF = findViewById(R.id.sendPDFButton);
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+/*
                     floatingButton.setVisibility(View.VISIBLE);
+*/
                     sendPDF.setVisibility(View.GONE);
 
                     transaction = getSupportFragmentManager().beginTransaction();
@@ -73,7 +77,9 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
                     transaction.commit();
                     return true;
                 case R.id.navigation_dashboard:
+/*
                     floatingButton.setVisibility(View.GONE);
+*/
                     sendPDF.setVisibility(View.GONE);
 
                     transaction = getSupportFragmentManager().beginTransaction();
@@ -84,7 +90,9 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
                     transaction.commit();
                     return true;
                 case R.id.navigation_notifications:
+/*
                     floatingButton.setVisibility(View.VISIBLE);
+*/
                     sendPDF.setVisibility(View.VISIBLE);
                     transaction = getSupportFragmentManager().beginTransaction();
                     ActivityFragment activityFragment=new ActivityFragment();
@@ -101,7 +109,9 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
                     return true;
 
                 case R.id.logout:
+/*
                     floatingButton.setVisibility(View.GONE);
+*/
                     sendPDF.setVisibility(View.GONE);
 
                     Realm.init(getBaseContext());

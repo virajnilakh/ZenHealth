@@ -22,7 +22,7 @@
 
     </FrameLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <!--<android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         app:backgroundTint="@color/cardview_light_background"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add" />-->
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -55,16 +55,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:visibility="gone"
-
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
+
+        android:layout_marginEnd="8dp"
         android:layout_weight="1"
 
         android:clickable="true"
+        android:visibility="gone"
         app:backgroundTint="@color/cardview_light_background"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_send_black_24dp" />
 
     <!--<fragment
