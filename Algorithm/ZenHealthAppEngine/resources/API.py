@@ -1,28 +1,22 @@
+import json
+
+import numpy as np
+import pandas as pd
+import resources.datamanager as datamanager
+import scipy as sp
 from flask import Flask, render_template, request, session, flash, redirect, jsonify, json, Response
 from flask_restful import Resource, Api
-
-
-
-from sklearn.naive_bayes import GaussianNB
+from pandas.io.json import json_normalize
+from sklearn import preprocessing
 from sklearn import svm
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors.nearest_centroid import NearestCentroid
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
-
-import pandas as pd
-import numpy as np
-import scipy as sp
-
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
-from sklearn import preprocessing
-
-import json
-from pandas.io.json import json_normalize
-
-import resources.datamanager as datamanager
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors.nearest_centroid import NearestCentroid
 
 # Algorithm
 '''

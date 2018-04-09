@@ -1,6 +1,4 @@
-from flask import Flask, render_template, request, session, flash, redirect, jsonify, json, Response
-from flask.views import MethodView
-import uuid
+from flask import Flask, json, Response
 from resources.API import API as ZenhealthService
 #from flask_cors import CORS
 

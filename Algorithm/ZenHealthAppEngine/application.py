@@ -1,7 +1,5 @@
-from flask import Flask, render_template, request, session, flash, redirect, jsonify, json, Response
-from flask.views import MethodView
-import uuid
-from Analysis import Analysis as ZenhealthService
+from flask import Flask, json, Response
+from resources.API import API as ZenhealthService
 #from flask_cors import CORS
 
 application = Flask(__name__)
@@ -22,7 +20,15 @@ def testPing():
     print("ping successfull")
     return json.dumps({'status': 'ok', 'message': 'Zenhealth API service :v1'})
 
+@application.route("/v1/zenhealth/bf", methods=['GET'])
+def getBreakfast():
+        breakfastBucket = service.getBreakfast('user2')
+        resp = Response(json.dumps(breakfastBucket))
+        # resp.headers['Access-Control-Allow-Origin'] = '*'
+        resp.headers['Content-Type'] = 'application/json'
+        return resp
 
+#----------------------------------------------------------------
 @application.route("/v1/zenhealth/low", methods=['GET'])
 def getLow():
         lowbucket = service.getLowBucket()
@@ -30,6 +36,7 @@ def getLow():
         #resp.headers['Access-Control-Allow-Origin'] = '*'
         resp.headers['Content-Type'] = 'application/json'
         return resp
+
 
 
 @application.route("/v1/zenhealth/medium", methods=['GET'])
@@ -51,4 +58,4 @@ def getHigh():
 
 if __name__ == "__main__":
     print("running on 0.0.0.0")
-    application.run(host='127.0.0.1', port=8080, debug=True)
+    application.run(debug=True)

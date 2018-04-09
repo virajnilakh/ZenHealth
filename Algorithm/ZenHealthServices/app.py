@@ -1,7 +1,6 @@
-from flask import Flask, jsonify, abort, request
-from flask_restful import Resource, Api
+from flask import Flask
+from flask_restful import Api
 from resources.API import API as API
-import resources.Analysis as Service
 
 
 app = Flask(__name__)
