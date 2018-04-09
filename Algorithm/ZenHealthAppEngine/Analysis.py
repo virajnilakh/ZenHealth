@@ -1,12 +1,11 @@
 #Import Library
 from time import time
-import matplotlib.pyplot as plt
 
 from sklearn.naive_bayes import GaussianNB
 from sklearn import svm
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors.nearest_centroid import NearestCentroid
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import 
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 
 import pandas as pd
