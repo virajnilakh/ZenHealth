@@ -12,7 +12,7 @@ from firebase_admin import db
 
 
 # # Get a database reference to our posts
-# food_db_ref = db.reference('https://zenhealth-215f6.firebaseio.com/')
+food_db_ref = db.reference('foodData')
 # # Get a database reference to our posts
 # user_db_ref = db.reference('https://zenhealth-215f6-25c67.firebaseio.com/')
 
