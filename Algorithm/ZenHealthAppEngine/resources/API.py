@@ -5,7 +5,6 @@ import pandas as pd
 import resources.datamanager as datamanager
 import scipy as sp
 from flask import Flask, render_template, request, session, flash, redirect, jsonify, json, Response
-from flask_restful import Resource, Api
 from pandas.io.json import json_normalize
 from sklearn import preprocessing
 from sklearn import svm
@@ -77,7 +76,8 @@ class API():
         foodlist = datamanager.food_db.get('/foodData', None, params={'Course' : 'Lunch'})
 
         print(len(foodlist))
-        print(foodlist)
+        val2 = foodlist['Name']['Course']
+        print(pd.DataFrame(val2, columns=["time", "temperature", "quality"]))
 
         for f_id, f_info in foodlist.items():
             # for key in f_info:

@@ -8,11 +8,11 @@ collection.find_one({"name":"name1"})
 '''
 from firebase import firebase
 # Import database module.
-from firebase_admin import db
+#from firebase_admin import db
 
 
 # # Get a database reference to our posts
-food_db_ref = db.reference('foodData')
+#food_db_ref = firebase.database().ref('foodData');
 # # Get a database reference to our posts
 # user_db_ref = db.reference('https://zenhealth-215f6-25c67.firebaseio.com/')
 
