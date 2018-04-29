@@ -12,6 +12,15 @@ from firebase import firebase
 
 
 # # Get a database reference to our posts
+
+#root = db.reference()
+
+
+#dinos = db.reference('foodData')
+
+# Retrieve the five tallest dinosaurs in the database sorted by height.
+# 'result' will be a sorted data structure (list or OrderedDict).
+#result = dinos.order_by_child('sugarLevel').limit_to_last(5).get()
 #food_db_ref = firebase.database().ref('foodData');
 # # Get a database reference to our posts
 # user_db_ref = db.reference('https://zenhealth-215f6-25c67.firebaseio.com/')

@@ -16,7 +16,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neighbors.nearest_centroid import NearestCentroid
+from pandas.io.json import json_normalize
 import random
+from sklearn.cluster import KMeans
 # Algorithm
 '''
 connect to user profile  and get diet 
@@ -74,18 +76,33 @@ class API():
         dinner = []
         dinnerCnt = 0
         foodlist = datamanager.food_db.get('/foodData', None, params={'Course' : 'Lunch'})
-
         print(len(foodlist))
-        val2 = foodlist['Name']['Course']
-        print(pd.DataFrame(val2, columns=["time", "temperature", "quality"]))
+        print(foodlist)
+        food_result = []
+        for key, value in foodlist.items():
+            food_result.append(value)
 
-        for f_id, f_info in foodlist.items():
+        print(food_result)
+        df = pd.DataFrame.from_dict(json_normalize(food_result), orient='columns')
+        print(df)
+        df.shape
+        df.to_csv("fooditem.csv", sep=',');
+
+        #filter fooditems for low sugar
+        if sugarConsumed > 11:
+            new_fdata = {k: v for k, v in foodlist.items() if v['sugarLevel'] == 'Low'}
+        elif sugarConsumed < 7:
+            new_fdata = {k: v for k, v in foodlist.items() if v['sugarLevel'] == 'Medium'}
+        else:
+            new_fdata = {k: v for k, v in foodlist.items() if v['sugarLevel'] == 'High'}
+
+        for f_id, f_info in new_fdata.items():
             # for key in f_info:
             #     print(key + ':', f_info[key])
             #print(f_info)
 
             if 'Course' in f_info:
-                if 'Non Vegeterian' == f_info['allowedDiet']:
+                if 'Non Vegeterian'.lower() == f_info['allowedDiet'].lower():
                     if timeslot in range(4, 12):
                         if 'Lunch' in f_info['Course']:
                             lunch.append(f_info['Name'])
@@ -117,6 +134,9 @@ class API():
         print(len(lunch), len(bf), len(dinner))
         if len(lunch) > 1:
             result['Lunch'] = random.sample(lunch, 5)
+        elif len(lunch) < 5:
+            result['Lunch'] = lunch
+
         if len(bf) < 5:
             result['Breakfast'] = bf
         elif len(bf) > 1:
@@ -124,6 +144,9 @@ class API():
 
         if len(dinner) > 1 :
             result['Dinner'] = random.sample(dinner, 5)
+        elif len(dinner)  < 5:
+            result['Breakfast'] = dinner
+
         print(result)
 
         return result
