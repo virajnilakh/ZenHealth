@@ -35,6 +35,8 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mongodb.stitch.android.StitchClient;
 import com.mongodb.stitch.android.auth.anonymous.AnonymousAuthProvider;
 import com.mongodb.stitch.android.services.mongodb.MongoClient;
@@ -42,6 +44,7 @@ import com.zenloop.zenhealth.data.User;
 
 import org.bson.Document;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,6 +62,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    public static int  userNo = 5;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -78,6 +82,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private Realm realm;
 
+    DatabaseReference mLoginReference = FirebaseDatabase.getInstance("https://zenhealth-215f6-25c67.firebaseio.com/").getReference("userCredential");
+
+    DatabaseReference mUnameReference = mLoginReference.child("user"+userNo);
+    //DatabaseReference mPasswordReference = mLoginReference.child("password");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,6 +152,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         Object email=doc.get("email");
                         Object pass=doc.get("password");
                         String userNamePass=email.toString()+":"+pass.toString();
+
                         DUMMY_CREDENTIALS.add(userNamePass);
                     }
 
@@ -366,6 +375,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+            //mUnameReference.setValue(email);
+            //mPasswordReference.setValue(password);
         }
 
         @Override

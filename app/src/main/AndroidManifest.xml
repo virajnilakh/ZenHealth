@@ -24,7 +24,6 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".Register" />
         <activity android:name=".Onboarding" />
-        <activity android:name=".BloodGlucose" />
         <activity android:name=".ActivityPage" />
         <activity android:name=".HomeActivity" />
 

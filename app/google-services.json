@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "108912141397",
+    "firebase_url": "https://zenhealth-215f6.firebaseio.com",
+    "project_id": "zenhealth-215f6",
+    "storage_bucket": "zenhealth-215f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:108912141397:android:397fd42ddc397810",
+        "android_client_info": {
+          "package_name": "com.zenloop.zenhealth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "108912141397-g0uadc88v3jtsj51qbm1q0f4aorktdeq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zenloop.zenhealth",
+            "certificate_hash": "f23cf84ad500c7009db106a077dfe9837d4d5904"
+          }
+        },
+        {
+          "client_id": "108912141397-64mq3ihkd0cvrm9h759th2uuatb6v19h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_Df0vTPSQSv6zAxB7KIgCA6mTReI6nnw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "108912141397-64mq3ihkd0cvrm9h759th2uuatb6v19h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
