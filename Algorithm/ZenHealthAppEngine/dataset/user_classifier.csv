@@ -1,0 +1,6 @@
+id,user,bloodglucoselevel,bmi,gender,sugarcomsumed,diet,allergy,label
+1,Peter,240,200,male,7,,,1
+2,Ketty,140,165,female,5,,,2
+3,Jola,290,266,female,2,,,1
+4,Heera,100,150,female,3,,,2
+5,Smith,65,120,male,0.1,,,3

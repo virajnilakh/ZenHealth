@@ -84,10 +84,12 @@ class API():
 
         print(food_result)
         df = pd.DataFrame.from_dict(json_normalize(food_result), orient='columns')
+        #print(df)
+        df.shape
+        df.to_csv("fooditem.csv", sep=',')
+       # df = df.astype(float).fillna(0.0)
         print(df)
         df.shape
-        df.to_csv("fooditem.csv", sep=',');
-
         #filter fooditems for low sugar
         if sugarConsumed > 11:
             new_fdata = {k: v for k, v in foodlist.items() if v['sugarLevel'] == 'Low'}
@@ -158,3 +160,14 @@ def feet2m(f, i):
 def pound2kg(p):
     kg = p / 2.2
     return kg
+
+def user_classifier():
+    X = pd.read_csv('dataset/user_classifier.csv')
+    Y = X['label']
+    X.head()
+    X = dataprocess(X)
+
+
+def dataprocess(X):
+    #convert string into int
+    #remove
