@@ -1,26 +1,36 @@
 package com.zenloop.zenhealth;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,6 +38,7 @@ import java.util.ArrayList;
  * Activities that contain this fragment must implement the
  * to handle interaction events.
  */
+
 public class ActivityFragment extends Fragment {
 
 
@@ -59,9 +70,28 @@ public class ActivityFragment extends Fragment {
         mChart.setDrawGridBackground(false);
         mChart.setMaxHighlightDistance(300);
 
-        XAxis x = mChart.getXAxis();
-        x.setEnabled(false);
+        class Data {
 
+            public String xAxisValue;
+            public float yValue;
+            public float xValue;
+
+            public Data(float xValue, float yValue, String xAxisValue) {
+                this.xAxisValue = xAxisValue;
+                this.yValue = yValue;
+                this.xValue = xValue;
+            }
+        }
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //xAxis.setTypeface(mTf);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setTextColor(Color.LTGRAY);
+        xAxis.setTextSize(13f);
+        xAxis.setLabelCount(5);
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setGranularity(1f);
         YAxis y = mChart.getAxisLeft();
         //y.setTypeface(mTfLight);
         y.setLabelCount(6, false);
@@ -71,7 +101,19 @@ public class ActivityFragment extends Fragment {
         y.setAxisLineColor(Color.WHITE);
 
         mChart.getAxisRight().setEnabled(false);
+        final List<Data> data = new ArrayList<>();
+        data.add(new Data(0f, -224.1f, "12-29"));
+        data.add(new Data(1f, 238.5f, "12-30"));
+        data.add(new Data(2f, 1280.1f, "12-31"));
+        data.add(new Data(3f, -442.3f, "01-01"));
+        data.add(new Data(4f, -2280.1f, "01-02"));
 
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return data.get(Math.min(Math.max((int) value, 0), data.size()-1)).xAxisValue;
+            }
+        });
         // add data
         setData(45, 100);
 
@@ -136,7 +178,16 @@ public class ActivityFragment extends Fragment {
             mChart.setData(data);
         }
     }
+    public void createAndroidElement(){
+        CardView card=new CardView(getContext());
+        RelativeLayout.LayoutParams cardParams =
+                new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+        card.setLayoutParams(cardParams);
 
+
+    }
 
 
 }
