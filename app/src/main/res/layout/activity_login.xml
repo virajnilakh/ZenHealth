@@ -15,9 +15,9 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="163dp"
-        android:layout_height="159dp"
-        app:srcCompat="@drawable/zenloop" />
+        android:layout_width="225dp"
+        android:layout_height="156dp"
+        app:srcCompat="@drawable/zenloop1" />
 
     <TextView
         android:id="@+id/invalidCredentials"
