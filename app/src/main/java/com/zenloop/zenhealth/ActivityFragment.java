@@ -2,6 +2,7 @@ package com.zenloop.zenhealth;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -9,10 +10,12 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -23,6 +26,8 @@ import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
+
+
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
@@ -126,6 +131,11 @@ public class ActivityFragment extends Fragment {
         l.setXEntrySpace(4f);
 
         mChart.animateXY(2000, 2000);
+        createAndroidElement(v);
+        createAndroidElement(v);
+        createAndroidElement(v);
+        createAndroidElement(v);
+        createAndroidElement(v);
         return v;
     }
     private  class Data {
@@ -204,13 +214,57 @@ public class ActivityFragment extends Fragment {
             return mFormat.format(value);
         }
     }
-    public void createAndroidElement(){
+    public void createAndroidElement(View v){
+        LinearLayout parent = (LinearLayout) v.findViewById(R.id.parentLayout);
+
+        LinearLayout.LayoutParams cardParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+        cardParams.setMargins(30,30,30,0);
         CardView card=new CardView(getContext());
-        RelativeLayout.LayoutParams cardParams =
-                new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+        card.setCardBackgroundColor(Color.parseColor("#83D3BB"));
         card.setLayoutParams(cardParams);
+
+        LinearLayout.LayoutParams layoutParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(10,10,10,10);
+        LinearLayout wrapper=new LinearLayout(getContext());
+        wrapper.setLayoutParams(layoutParams);
+        wrapper.setOrientation(LinearLayout.HORIZONTAL);
+
+        LinearLayout.LayoutParams textParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+        textParams.setMargins(50,50,50,50);
+        TextView text=new TextView(getContext());
+        text.setText("22nd January \nBlood Glucose Level: 100");
+        text.setTextColor(Color.WHITE);
+        text.setTypeface(null,Typeface.BOLD);
+
+
+        LinearLayout.LayoutParams imageParams =
+                new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(182,181));
+        ImageView imageView = new ImageView(getContext());
+        imageView.setImageResource(R.mipmap.ic_launcher);
+
+        imageView.setPadding(5,5,5,5);
+        /*Resources r = getResources();
+
+        int px = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 200, r.getDisplayMetrics());*/
+        wrapper.addView(imageView,imageParams);
+        wrapper.addView(text,textParams);
+
+        imageView.getLayoutParams().height = 231;
+        imageView.getLayoutParams().width = 232;
+
+        card.addView(wrapper);
+        parent.addView(card,cardParams);
+
 
 
     }
