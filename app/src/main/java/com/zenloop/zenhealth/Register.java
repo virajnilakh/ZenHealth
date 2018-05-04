@@ -1,5 +1,6 @@
 package com.zenloop.zenhealth;
 
+import android.content.Intent;
 import android.provider.DocumentsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -114,6 +115,8 @@ public class Register extends AppCompatActivity {
             public void onComplete(@NonNull Task<List<Document>> task) {
                 if (task.isSuccessful()) {
                     Log.d("STITCH", task.getResult().toString());
+                    Intent myIntent = new Intent(Register.this, LoginActivity.class);
+                    startActivity(myIntent);
                     return;
                 }
                 Log.e("STITCH", task.getException().toString());
