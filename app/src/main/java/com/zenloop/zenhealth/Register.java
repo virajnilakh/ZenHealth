@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mongodb.stitch.android.StitchClient;
 import com.mongodb.stitch.android.auth.anonymous.AnonymousAuthProvider;
 import com.mongodb.stitch.android.services.mongodb.MongoClient;
@@ -21,14 +24,51 @@ import java.util.List;
 
 public class Register extends AppCompatActivity {
 
+
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
     }
 
-    public void connectDb(View view) {
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
+    }
+
+    public void createAccount(View view) {
+        final TextView email = (TextView) findViewById(R.id.email);
+        final TextView password = (TextView) findViewById(R.id.password);
+        mAuth.createUserWithEmailAndPassword(email.toString(), password.toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    String user_id = mAuth.getCurrentUser().getUid();
+                    System.out.println("Success");
+
+                } else {
+                    System.out.println("Failure");
+                }
+            }
+        });
+    }
+   /* private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+                    "User ID: " + user.getUid());
+        } else {
+            ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+                    "Error: sign in failed.");
+        }
+    }*/
+    /*public void connectDb(View view) {
         final TextView fname=(TextView) findViewById(R.id.fname);
         final TextView lname=(TextView) findViewById(R.id.lname);
         final TextView email=(TextView) findViewById(R.id.email);
@@ -51,7 +91,7 @@ public class Register extends AppCompatActivity {
                         updateDoc.put("lname", lname.getText());
                         updateDoc.put("email", email.getText());
                         updateDoc.put("password", password.getText());*/
-                        updateDoc.put("fname", fnamestr);
+                      /*  updateDoc.put("fname", fnamestr);
                         updateDoc.put("lname", lnamestr);
                         updateDoc.put("email", emailstr);
                         updateDoc.put("password", passwordstr);
@@ -80,5 +120,5 @@ public class Register extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 }
