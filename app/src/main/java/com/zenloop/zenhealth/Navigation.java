@@ -2,6 +2,7 @@ package com.zenloop.zenhealth;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -141,15 +142,24 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
     }
 
     public void enableList(View view) {
-        View food= findViewById(R.id.foodText);
+        String tag = view.getTag().toString();
+        Resources res = getResources();
+        int id = res.getIdentifier("foodText"+tag, "id", this.getPackageName());
+        View food= findViewById(id);
         food.setVisibility(View.GONE);
-        View spinner= findViewById(R.id.planets_spinner);
+        id = res.getIdentifier("planets_spinner"+tag, "id", this.getPackageName());
+        View spinner= findViewById(id);
         spinner.setVisibility(View.VISIBLE);
     }
 
     public void disableButtons(View view) {
-        View acceptButton=findViewById(R.id.acceptButton);
-        View denyButton=findViewById(R.id.denyButton);
+        String tag = view.getTag().toString();
+        Resources res = getResources();
+        int id = res.getIdentifier("acceptButton"+tag, "id", this.getPackageName());
+        View acceptButton=findViewById(id);
+        id = res.getIdentifier("denyButton"+tag, "id", this.getPackageName());
+
+        View denyButton=findViewById(id);
         acceptButton.setVisibility(View.GONE);
         denyButton.setVisibility(View.GONE);
     }
