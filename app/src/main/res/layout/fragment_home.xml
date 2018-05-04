@@ -24,9 +24,8 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-
-
         android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,9 +112,16 @@
                             android:layout_height="81dp"
                             android:padding="5dp"
                             app:srcCompat="@drawable/breakfast" />
+                        <AutoCompleteTextView
+                            android:id="@+id/planets_spinner1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Enter food"
+                            android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/textView1"
+                            android:id="@+id/foodText1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
@@ -130,18 +136,20 @@
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/denyButton"
+                            android:id="@+id/denyButton1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:tag="1"
                             android:onClick="enableList"
                             android:text="Deny" />
 
                         <Button
-                            android:id="@+id/acceptButton"
+                            android:id="@+id/acceptButton1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:tag="1"
                             android:onClick="disableButtons"
 
                             android:text="Accept" />
@@ -181,7 +189,7 @@
                             app:srcCompat="@drawable/lunch" />
 
                         <AutoCompleteTextView
-                            android:id="@+id/planets_spinner"
+                            android:id="@+id/planets_spinner2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -189,7 +197,7 @@
                             android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/foodText"
+                            android:id="@+id/foodText2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
@@ -211,18 +219,20 @@
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/denyButton"
+                            android:id="@+id/denyButton2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:tag="2"
                             android:onClick="enableList"
                             android:text="Deny" />
 
                         <Button
-                            android:id="@+id/acceptButton"
+                            android:id="@+id/acceptButton2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:tag="2"
                             android:onClick="disableButtons"
 
                             android:text="Accept" />
@@ -260,9 +270,16 @@
                             android:layout_height="81dp"
                             android:padding="5dp"
                             app:srcCompat="@drawable/dinner" />
+                        <AutoCompleteTextView
+                            android:id="@+id/planets_spinner3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Enter food"
+                            android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/foodText3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
@@ -277,18 +294,20 @@
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/denyButton"
+                            android:id="@+id/denyButton3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:tag="3"
                             android:onClick="enableList"
                             android:text="Deny" />
 
                         <Button
-                            android:id="@+id/acceptButton"
+                            android:id="@+id/acceptButton3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:tag="3"
                             android:onClick="disableButtons"
 
                             android:text="Accept" />

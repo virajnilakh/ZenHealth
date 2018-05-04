@@ -12,7 +12,7 @@
 
 
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/parentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -69,7 +70,7 @@
                     android:layout_marginLeft="5dp"
                     android:background="@color/colorPrimary" />-->
 
-                <com.github.mikephil.charting.charts.LineChart
+                <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/chart"
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />
@@ -87,6 +88,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="466dp">
 
+<!--
                 <LinearLayout
                     android:id="@+id/linear1"
                     android:layout_width="match_parent"
@@ -114,6 +116,7 @@
 
 
                 </LinearLayout>
+-->
 
             </android.support.v7.widget.CardView>
         </LinearLayout>

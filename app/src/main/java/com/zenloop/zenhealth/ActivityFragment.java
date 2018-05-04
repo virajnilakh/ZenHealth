@@ -2,35 +2,49 @@ package com.zenloop.zenhealth;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+
+
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IFillFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -43,48 +57,34 @@ public class ActivityFragment extends Fragment {
 
 
 
-    private LineChart mChart;
+    private BarChart mChart;
     private TextView tvX, tvY;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_activity, container, false);
-        mChart = (LineChart) v.findViewById(R.id.chart);
-        mChart.setViewPortOffsets(0, 0, 0, 0);
-        //mChart.setBackgroundColor(Color.rgb(204, 41, 105));
 
-        // no description text
+
+        mChart = (BarChart) v.findViewById(R.id.chart);
+        mChart.setBackgroundColor(Color.WHITE);
+        mChart.setExtraTopOffset(-3f);
+        mChart.setExtraBottomOffset(1f);
+        mChart.setExtraLeftOffset(7f);
+        mChart.setExtraRightOffset(7f);
+
+        mChart.setDrawBarShadow(false);
+        mChart.setDrawValueAboveBar(true);
+
         mChart.getDescription().setEnabled(false);
 
-        // enable touch gestures
-        mChart.setTouchEnabled(true);
-
-        // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-
-        // if disabled, scaling can be done on x- and y-axis separately
+        // scaling can now only be done on x- and y-axis separately
         mChart.setPinchZoom(false);
 
         mChart.setDrawGridBackground(false);
-        mChart.setMaxHighlightDistance(300);
 
-        class Data {
-
-            public String xAxisValue;
-            public float yValue;
-            public float xValue;
-
-            public Data(float xValue, float yValue, String xAxisValue) {
-                this.xAxisValue = xAxisValue;
-                this.yValue = yValue;
-                this.xValue = xValue;
-            }
-        }
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        //xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
         xAxis.setTextColor(Color.LTGRAY);
@@ -92,21 +92,26 @@ public class ActivityFragment extends Fragment {
         xAxis.setLabelCount(5);
         xAxis.setCenterAxisLabels(true);
         xAxis.setGranularity(1f);
-        YAxis y = mChart.getAxisLeft();
-        //y.setTypeface(mTfLight);
-        y.setLabelCount(6, false);
-        y.setTextColor(Color.WHITE);
-        y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
-        y.setDrawGridLines(false);
-        y.setAxisLineColor(Color.WHITE);
 
+        YAxis left = mChart.getAxisLeft();
+        left.setDrawLabels(false);
+        left.setSpaceTop(20f);
+        left.setSpaceBottom(20f);
+        left.setDrawAxisLine(false);
+        left.setDrawGridLines(false);
+        left.setDrawZeroLine(true); // draw a zero line
+        left.setZeroLineColor(Color.GRAY);
+        left.setZeroLineWidth(0.7f);
         mChart.getAxisRight().setEnabled(false);
+        mChart.getLegend().setEnabled(false);
+
+        // THIS IS THE ORIGINAL DATA YOU WANT TO PLOT
         final List<Data> data = new ArrayList<>();
-        data.add(new Data(0f, -224.1f, "12-29"));
-        data.add(new Data(1f, 238.5f, "12-30"));
-        data.add(new Data(2f, 1280.1f, "12-31"));
-        data.add(new Data(3f, -442.3f, "01-01"));
-        data.add(new Data(4f, -2280.1f, "01-02"));
+        data.add(new Data(0.5f, 124.1f, "12-29"));
+        data.add(new Data(1.5f, 88.5f, "12-30"));
+        data.add(new Data(2.5f, 128.1f, "12-31"));
+        data.add(new Data(3.5f, 82.3f, "01-01"));
+        data.add(new Data(4.5f, 98.1f, "01-02"));
 
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
@@ -114,77 +119,152 @@ public class ActivityFragment extends Fragment {
                 return data.get(Math.min(Math.max((int) value, 0), data.size()-1)).xAxisValue;
             }
         });
-        // add data
-        setData(45, 100);
-
-        mChart.getLegend().setEnabled(false);
+        setData(data);
+        Legend l = mChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setForm(Legend.LegendForm.SQUARE);
+        l.setFormSize(9f);
+        l.setTextSize(11f);
+        l.setXEntrySpace(4f);
 
         mChart.animateXY(2000, 2000);
-
-        // dont forget to refresh the drawing
-        mChart.invalidate();
+        createAndroidElement(v);
+        createAndroidElement(v);
+        createAndroidElement(v);
+        createAndroidElement(v);
+        createAndroidElement(v);
         return v;
     }
-    private void setData(int count, float range) {
+    private  class Data {
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
+        public String xAxisValue;
+        public float yValue;
+        public float xValue;
 
-        for (int i = 0; i < count; i++) {
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 20;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            yVals.add(new Entry(i, val));
+        public Data(float xValue, float yValue, String xAxisValue) {
+            this.xAxisValue = xAxisValue;
+            this.yValue = yValue;
+            this.xValue = xValue;
+        }
+    }
+    private void setData(List<Data> dataList) {
+
+        ArrayList<BarEntry> values = new ArrayList<BarEntry>();
+        List<Integer> colors = new ArrayList<Integer>();
+        List<Integer> randColors = new ArrayList<Integer>();
+        randColors.add(Color.parseColor("#007ac1"));
+
+        randColors.add( Color.rgb(211, 74, 88));
+        randColors.add(Color.parseColor("#388e3c"));
+
+        randColors.add(Color.parseColor("#7b1fa2"));
+        randColors.add(Color.parseColor("#388e3c"));
+
+        Random rand = new Random();
+
+        for (int i = 0; i < dataList.size(); i++) {
+
+            Data d = dataList.get(i);
+            BarEntry entry = new BarEntry(d.xValue, d.yValue);
+            values.add(entry);
+
+            // specific colors
+            if (d.yValue >= 0)
+                colors.add(randColors.get(rand.nextInt(5)));
+            else
+                colors.add(randColors.get(rand.nextInt(5)));
         }
 
-        LineDataSet set1;
+        BarDataSet set;
 
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
-            set1.setValues(yVals);
+            set = (BarDataSet)mChart.getData().getDataSetByIndex(0);
+            set.setValues(values);
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(yVals, "DataSet 1");
+            set = new BarDataSet(values, "Values");
+            set.setColors(colors);
+            set.setValueTextColors(colors);
 
-            set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            set1.setCubicIntensity(0.2f);
-            //set1.setDrawFilled(true);
-            set1.setDrawCircles(false);
-            set1.setLineWidth(1.8f);
-            set1.setCircleRadius(4f);
-            set1.setCircleColor(Color.WHITE);
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setColor(Color.WHITE);
-            set1.setFillColor(Color.WHITE);
-            set1.setFillAlpha(100);
-            set1.setDrawHorizontalHighlightIndicator(false);
-            set1.setFillFormatter(new IFillFormatter() {
-                @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                    return -10;
-                }
-            });
+            BarData data = new BarData(set);
+            data.setValueTextSize(13f);
+            data.setValueFormatter(new ValueFormatter());
+            data.setBarWidth(0.8f);
 
-            // create a data object with the datasets
-            LineData data = new LineData(set1);
-            //data.setValueTypeface(mTfLight);
-            data.setValueTextSize(9f);
-            data.setDrawValues(false);
-
-            // set data
             mChart.setData(data);
+            mChart.invalidate();
         }
     }
-    public void createAndroidElement(){
+    private class ValueFormatter implements IValueFormatter
+    {
+
+        private DecimalFormat mFormat;
+
+        public ValueFormatter() {
+            mFormat = new DecimalFormat("######.0");
+        }
+
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            return mFormat.format(value);
+        }
+    }
+    public void createAndroidElement(View v){
+        LinearLayout parent = (LinearLayout) v.findViewById(R.id.parentLayout);
+
+        LinearLayout.LayoutParams cardParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+        cardParams.setMargins(30,30,30,0);
         CardView card=new CardView(getContext());
-        RelativeLayout.LayoutParams cardParams =
-                new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+        card.setCardBackgroundColor(Color.parseColor("#83D3BB"));
         card.setLayoutParams(cardParams);
+
+        LinearLayout.LayoutParams layoutParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(10,10,10,10);
+        LinearLayout wrapper=new LinearLayout(getContext());
+        wrapper.setLayoutParams(layoutParams);
+        wrapper.setOrientation(LinearLayout.HORIZONTAL);
+
+        LinearLayout.LayoutParams textParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+        textParams.setMargins(50,50,50,50);
+        TextView text=new TextView(getContext());
+        text.setText("22nd January \nBlood Glucose Level: 100");
+        text.setTextColor(Color.WHITE);
+        text.setTypeface(null,Typeface.BOLD);
+
+
+        LinearLayout.LayoutParams imageParams =
+                new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(182,181));
+        ImageView imageView = new ImageView(getContext());
+        imageView.setImageResource(R.mipmap.ic_launcher);
+
+        imageView.setPadding(5,5,5,5);
+        /*Resources r = getResources();
+
+        int px = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 200, r.getDisplayMetrics());*/
+        wrapper.addView(imageView,imageParams);
+        wrapper.addView(text,textParams);
+
+        imageView.getLayoutParams().height = 231;
+        imageView.getLayoutParams().width = 232;
+
+        card.addView(wrapper);
+        parent.addView(card,cardParams);
+
 
 
     }
