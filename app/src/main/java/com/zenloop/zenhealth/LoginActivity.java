@@ -392,7 +392,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
-                  if (pieces[0].equals(mEmail)) {
+                if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
                     boolean ans= pieces[1].equals(mPassword);
                     if(ans==true){
@@ -445,4 +445,3 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 }
-
