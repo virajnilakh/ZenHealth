@@ -8,7 +8,7 @@ collection.find_one({"name":"name1"})
 '''
 from firebase import firebase
 # Import database module.
-from firebase_admin import db
+#from firebase_admin import db
 #import firebase_admin
 
 

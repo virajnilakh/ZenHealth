@@ -1,6 +1,6 @@
 from flask import Flask, json, Response, request
 import numpy as np
-import resources.datamanager as datamanager
+import pandas as pd
 import random
 
 
@@ -28,6 +28,10 @@ def getFoodRecommendations():
     resp.headers['Content-Type'] = 'app/json'
     return resp
 
+def check(value):
+    if 0.50 <= value <= 150 and round(value,2)==value:
+        return True
+
 def getData(userid, timeslot, bglevel, sugarConsumed):
     print("retriving data");
 
@@ -41,52 +45,64 @@ def getData(userid, timeslot, bglevel, sugarConsumed):
     dinner = []
     dinnerCnt = 0
 
-    if bglevel in np.arange(2.5, 5.9,0.1):
+    print(category)
+    foodlist = pd.read_csv('dataset/fooditem.csv')
+    print(len(foodlist))
+
+    # if sugarConsumed > 11:
+    #     new_fdata = foodlist.loc[foodlist['sugarLevel'] == 'Low']
+    # elif 7.0 <=sugarConsumed <= 11:
+    #     new_fdata = foodlist.loc[foodlist['sugarLevel'] == 'Medium']
+    # elif 0.0 <= sugarConsumed <7 :
+    #     new_fdata = foodlist.loc[foodlist['sugarLevel'] == 'High']
+    #
+    # print(len(new_fdata))
+
+    if 5.0 <= bglevel <= 7.2:
         print("this is normal range before meal..high cal meal")
-        category = "High"
-    if bglevel in np.arange(6.0 , 9.0, 0.1):
+        new_fdata = foodlist.loc[foodlist['sugarLevel'] == 'High']
+    if 7.2 < bglevel <= 9.9:
         print(" eat with less calories..medium")
         isLowCateloryDiet = True
-        category = "Medium"
+        new_fdata = foodlist.loc[foodlist['sugarLevel'] == 'Medium']
     if bglevel > 10.0:
         print('compulsory low caleroies')
-        category = "Low"
-
-
-    foodlist = datamanager.food_db.get('/foodData', None, params={'Course': 'Lunch'})
-    print(len(foodlist))
-    print(foodlist)
-    new_fdata = {k: v for k, v in foodlist.items() if v['sugarLevel'] == category}
+        new_fdata = foodlist.loc[foodlist['sugarLevel'] == 'Low']
     print(len(new_fdata))
-    for f_id, f_info in foodlist.items():
+
+    #new_fdata = foodlist.loc[foodlist['allowedDiet'] == 'Non Vegeterian']
+
+    print(len(new_fdata))
+
+    for f_id, f_info in new_fdata.iterrows():
         # for key in f_info:
         #     print(key + ':', f_info[key])
-        # print(f_info)
-
-        if 'Course' in f_info:
-            if 'Non Vegeterian'.lower() == f_info['allowedDiet'].lower():
-                if timeslot in range(1, 12):
-                    if 'Lunch' in f_info['Course']:
+        course = []
+        #print(f_info['Course'])
+        course = str(f_info['Course'])
+        if f_info['Course'] != None:
+            if timeslot in range(1, 12):
+                    if course.find('Lunch'):
                         lunch.append(f_info['Name'])
                         lunchCnt += 1
-                    if 'Breakfast and Brunch' in f_info['Course']:
+                    if 'Breakfast and Brunch' in course:
                         bf.append(f_info['Name'])
                         bfCnt += 1
-                    if 'Main Dishes' in f_info['Course']:
+                    if 'Main Dishes' in course:
                         dinner.append(f_info['Name'])
                         dinnerCnt += 1
 
-                elif timeslot in range(13, 16):
-                    if 'Lunch' in f_info['Course']:
+            elif timeslot in range(13, 16):
+                    if 'Lunch' in course:
                         lunch.append(f_info['Name'])
                         lunchCnt += 1
-                    if 'Main Dishes' in f_info['Course']:
+                    if 'Main Dishes' in course:
                         dinner.append(f_info['Name'])
                         dinnerCnt += 1
 
 
-                elif timeslot in range(17, 23):
-                    if 'Main Dishes' in f_info['Course']:
+            elif timeslot in range(17, 23):
+                    if 'Main Dishes' in course:
                         dinner.append(f_info['Name'])
                         dinnerCnt += 1
 
