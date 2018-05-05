@@ -32,7 +32,17 @@ public class HomeFragment extends Fragment {
         for(int i=1;i<=3;i++){
             Resources res = getResources();
 
-            int id = res.getIdentifier("planets_spinner"+i, "id", getContext().getPackageName());
+            int id = res.getIdentifier("spinner"+i, "id", getContext().getPackageName());
+            Spinner dropdown =(Spinner) v.findViewById(id);
+
+            String[] items = new String[]{"Omlete and Hash Browns", "Pepperoni Pizza", "Lemon Pepper Chicken"};
+
+            ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
+            dropdown.setAdapter(adapter1);
+            dropdown.setSelection(0);
+
+            id = res.getIdentifier("planets_spinner"+i, "id", getContext().getPackageName());
+
             AutoCompleteTextView auto=(AutoCompleteTextView) v.findViewById(id);
             //Spinner spinner = (Spinner) v.findViewById(R.id.planets_spinner);
 // Create an ArrayAdapter using the string array and a default spinner layout

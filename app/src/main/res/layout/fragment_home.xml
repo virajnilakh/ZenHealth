@@ -119,15 +119,23 @@
                             android:layout_weight="1"
                             android:text="Enter food"
                             android:visibility="gone" />
+                        <Spinner
+                            android:id="@+id/spinner1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dropdown" />
+                        <!--
+                            android:background="@android:drawable/btn_dropdown"
+-->
 
-                        <TextView
+                        <!--<TextView
                             android:id="@+id/foodText1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:text="Omelette and Hash Browns"
-                            android:textColor="@android:color/background_light" />
+                            android:textColor="@android:color/background_light" />-->
                     </LinearLayout>
 
                     <LinearLayout
@@ -195,15 +203,19 @@
                             android:layout_weight="1"
                             android:text="Enter food"
                             android:visibility="gone" />
-
-                        <TextView
+                        <Spinner
+                            android:id="@+id/spinner2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dropdown" />
+                        <!--<TextView
                             android:id="@+id/foodText2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:text="Pepperoni Pizza"
-                            android:textColor="@android:color/background_light" />
+                            android:textColor="@android:color/background_light" />-->
 
                         <!--<Spinner
                             android:id="@+id/planets_spinner"
@@ -277,15 +289,19 @@
                             android:layout_weight="1"
                             android:text="Enter food"
                             android:visibility="gone" />
-
-                        <TextView
+                        <Spinner
+                            android:id="@+id/spinner3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dropdown" />
+                        <!--<TextView
                             android:id="@+id/foodText3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:text="Lemon Pepper Chicken"
-                            android:textColor="@android:color/background_light" />
+                            android:textColor="@android:color/background_light" />-->
                     </LinearLayout>
 
                     <LinearLayout
