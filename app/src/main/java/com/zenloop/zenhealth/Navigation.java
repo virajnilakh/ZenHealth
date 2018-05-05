@@ -139,6 +139,7 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
     @Override
     public void onEditTextDialogFragmentOK(String newValue, String tag) {
         System.out.println("Value:"+newValue);
+        System.out.println("Value:"+newValue);
     }
 
     public void enableList(View view) {
