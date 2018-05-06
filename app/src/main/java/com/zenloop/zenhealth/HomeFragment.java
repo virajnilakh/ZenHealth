@@ -19,6 +19,7 @@ import android.widget.Spinner;
 public class HomeFragment extends Fragment {
 
 
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -46,8 +47,9 @@ public class HomeFragment extends Fragment {
             AutoCompleteTextView auto=(AutoCompleteTextView) v.findViewById(id);
             //Spinner spinner = (Spinner) v.findViewById(R.id.planets_spinner);
 // Create an ArrayAdapter using the string array and a default spinner layout
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(),
-                    R.array.planets_array, android.R.layout.simple_spinner_item);
+            ArrayAdapter<String> adapter =new ArrayAdapter<String>(
+                    getContext(),
+                    android.R.layout.simple_dropdown_item_1line, items);
 
 // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -59,6 +61,7 @@ public class HomeFragment extends Fragment {
 
         return v;
     }
+
 
 
 }

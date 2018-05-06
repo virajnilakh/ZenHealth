@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void onClick(View view) {
                     List<String> userNamePass=new ArrayList<>();
-                    fillUserNamePass(userNamePass,view);
+                    //fillUserNamePass(userNamePass,view);
                     attemptLogin();
                 }
             });
@@ -128,6 +128,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+/*
     private void fillUserNamePass(List<String> userNamePass,View view) {
         final StitchClient stitchClient = new StitchClient(view.getContext(), "zenhealth-ycmlc");
         final MongoClient mongoClient = new MongoClient(stitchClient, "mongodb-atlas");
@@ -161,6 +162,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
     }
+*/
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -350,6 +352,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void register(View view) {
         Intent myIntent = new Intent(LoginActivity.this, Register.class);
         startActivity(myIntent);
+        finish();
     }
 
 
@@ -423,6 +426,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
                 Intent myIntent = new Intent(LoginActivity.this, Navigation.class);
                 startActivity(myIntent);
+                finish();
 
                 //finish();
             }else if(success){
