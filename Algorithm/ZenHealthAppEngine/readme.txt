@@ -26,10 +26,24 @@ The benefits of this configuration include:
 
 ## steps:
 
-gcloud endpoints services deploy modelserve.yaml : to deploy gcloud endpoints
+- gcloud endpoints services deploy modelserve.yaml : to deploy gcloud endpoints
 
-to get config ids from endpoints:
-gcloud endpoints configs list --service="modelserve-dot-zenloop-202821.appspot.com"
-=> CONFIG_ID     SERVICE_NAME
-2018-05-04r0  modelserve-dot-zenloop-202821.appspot.com
+- to get config ids from endpoints:
+    gcloud endpoints configs list --service="modelserve-dot-zenloop-202821.appspot.com"
+    => CONFIG_ID     SERVICE_NAME
+    2018-05-04r0  modelserve-dot-zenloop-202821.appspot.com
+
+- bucket_anme should be all small
+    gsutil mb gs://BUCKET_NAME
+    gsutil cp lr.pkl gs://BUCKET_NAME
+
+
+##Clean services
+
+- gcloud app services delete modelserve
+
+- gcloud endpoints services delete modelserve-dot-zenloop-202821.appspot.com
+
+tfidf , countvectorization
+
 

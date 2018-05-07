@@ -1,5 +1,6 @@
 from flask import Flask, json, Response, request
-from resources.API import API as ZenhealthService
+from resources.Service import Service\
+    as ZenhealthService
 #from flask_cors import CORS
 import os
 

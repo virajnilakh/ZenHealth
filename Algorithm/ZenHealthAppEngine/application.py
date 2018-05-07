@@ -2,6 +2,8 @@ from flask import Flask, json, Response, request
 import numpy as np
 import pandas as pd
 import random
+from sklearn.externals import joblib
+from pandas.io.json import json_normalize
 
 
 app = Flask(__name__)
@@ -45,6 +47,13 @@ def getData(userid, timeslot, bglevel, sugarConsumed):
     dinner = []
     dinnerCnt = 0
 
+    best_model = joblib.load('dataset/user_classifier.pkl')
+    df = pd.DataFrame.from_dict(json_normalize({'id': 23, 'bloodglucodelevel': bglevel, 'bmi': 7.4,
+                                                'sugarcomsumed': sugarConsumed, 'gender': gender, 'user': name,
+                                                'label': 0}), orient='columns')
+
+    predicted_category = best_model.predict(df)
+    print(predicted_category)
     print(category)
     foodlist = pd.read_csv('dataset/fooditem.csv')
     print(len(foodlist))

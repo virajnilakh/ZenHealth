@@ -5,12 +5,11 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn import svm
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors.nearest_centroid import NearestCentroid
-from sklearn.neighbors import 
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 
 import pandas as pd
-import numpy as np
-import scipy as sp
+
 
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error
