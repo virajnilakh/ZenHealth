@@ -29,7 +29,6 @@ public class Register extends AppCompatActivity {
 
     }
 
-/*
     public void connectDb(View view) {
         final TextView fname=(TextView) findViewById(R.id.fname);
         final TextView lname=(TextView) findViewById(R.id.lname);
@@ -49,12 +48,10 @@ public class Register extends AppCompatActivity {
                     public Task<Document> then(@NonNull Task<String> task) throws Exception {
                         final Document updateDoc = new Document("owner_id",task.getResult());
 
-                        */
-/*updateDoc.put("fname", fname.getText());
+                        /*updateDoc.put("fname", fname.getText());
                         updateDoc.put("lname", lname.getText());
                         updateDoc.put("email", email.getText());
-                        updateDoc.put("password", password.getText());*//*
-
+                        updateDoc.put("password", password.getText());*/
                         updateDoc.put("fname", fnamestr);
                         updateDoc.put("lname", lnamestr);
                         updateDoc.put("email", emailstr);
@@ -78,7 +75,8 @@ public class Register extends AppCompatActivity {
             public void onComplete(@NonNull Task<List<Document>> task) {
                 if (task.isSuccessful()) {
                     Log.d("STITCH", task.getResult().toString());
-                    Intent myIntent = new Intent(Register.this, LoginActivity.class);
+                    Log.d("STITCH", task.getResult().toString());
+                    Intent myIntent = new Intent(Register.this, Onboarding.class);
                     startActivity(myIntent);
                     finish();
                     return;
@@ -88,5 +86,4 @@ public class Register extends AppCompatActivity {
         });
 
     }
-*/
 }
