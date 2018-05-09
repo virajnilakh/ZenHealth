@@ -13,22 +13,36 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity" android:noHistory="true">
+        <activity
+            android:name=".IntroActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity >
-
-
-        <activity android:name=".Navigation" android:noHistory="true"/>
-        <activity android:name=".MainActivity" android:noHistory="true"/>
-        <activity android:name=".Register" android:noHistory="true"/>
-        <activity android:name=".Onboarding" android:noHistory="true"/>
-        <activity android:name=".ActivityPage" android:noHistory="true"/>
-        <activity android:name=".HomeActivity" android:noHistory="true"/>
-
+        </activity>
+        <activity
+            android:name=".Navigation"
+            android:noHistory="true" />
+        <activity
+            android:name=".LoginActivity"
+            android:noHistory="true" />
+        <activity
+            android:name=".MainActivity"
+            android:noHistory="true" />
+        <activity
+            android:name=".Register"
+            android:noHistory="true" />
+        <activity
+            android:name=".Onboarding"
+            android:noHistory="true" />
+        <activity
+            android:name=".ActivityPage"
+            android:noHistory="true" />
+        <activity
+            android:name=".HomeActivity"
+            android:noHistory="true" />
     </application>
 
 </manifest>
