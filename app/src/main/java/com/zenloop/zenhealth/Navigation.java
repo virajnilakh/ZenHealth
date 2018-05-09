@@ -169,4 +169,6 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
         acceptButton.setVisibility(View.GONE);
         denyButton.setVisibility(View.GONE);
     }
+
+
 }
