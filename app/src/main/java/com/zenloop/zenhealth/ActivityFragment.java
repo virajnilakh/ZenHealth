@@ -130,7 +130,7 @@ public class ActivityFragment extends Fragment {
         l.setTextSize(11f);
         l.setXEntrySpace(4f);
 
-        mChart.animateXY(2000, 2000);
+        mChart.animateXY(1000, 1000);
         createAndroidElement(v);
         createAndroidElement(v);
         createAndroidElement(v);

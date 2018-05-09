@@ -145,12 +145,17 @@ public class Navigation extends AppCompatActivity implements EditTextDialogFragm
     public void enableList(View view) {
         String tag = view.getTag().toString();
         Resources res = getResources();
-        int id = res.getIdentifier("spinner"+tag, "id", this.getPackageName());
+        int id = res.getIdentifier("title"+tag, "id", this.getPackageName());
+        TextView title=(TextView) findViewById(id);
+        title.setText("Type your choice");
+        id = res.getIdentifier("spinner"+tag, "id", this.getPackageName());
         View food= findViewById(id);
         food.setVisibility(View.GONE);
         id = res.getIdentifier("planets_spinner"+tag, "id", this.getPackageName());
         View spinner= findViewById(id);
+
         spinner.setVisibility(View.VISIBLE);
+
     }
 
     public void disableButtons(View view) {

@@ -24,6 +24,7 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
+        xmlns:fancy="http://schemas.android.com/apk/res-auto"
         android:layout_height="match_parent"
         android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
@@ -36,6 +37,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+<!--
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
@@ -73,16 +75,17 @@
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
-                <!--<com.jjoe64.graphview.GraphView
+                &lt;!&ndash;<com.jjoe64.graphview.GraphView
                     android:id="@+id/graph"
                     android:layout_width="374dp"
 
                     android:layout_height="200dip"
                     android:layout_marginLeft="5dp"
-                    android:background="@color/colorPrimary" />-->
+                    android:background="@color/colorPrimary" />&ndash;&gt;
 
 
             </LinearLayout>
+-->
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -108,23 +111,51 @@
 
                         <ImageView
                             android:id="@+id/imageView"
-                            android:layout_width="82dp"
-                            android:layout_height="81dp"
+                            android:layout_width="85dp"
+                            android:layout_height="85dp"
                             android:padding="5dp"
                             app:srcCompat="@drawable/breakfast" />
-                        <AutoCompleteTextView
-                            android:id="@+id/planets_spinner1"
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Enter food"
-                            android:visibility="gone" />
-                        <Spinner
-                            android:id="@+id/spinner1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:spinnerMode="dropdown"
-                            />
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="wrap_content"
+                                android:textColor="#ffff"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="Breakfast"
+                                android:textSize="16sp" />
+                            <TextView
+                                android:id="@+id/title1"
+                                android:layout_width="wrap_content"
+                                android:textColor="#ffff"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+
+                                android:layout_height="wrap_content"
+                                android:text="Recommended Food Items"
+                                android:textSize="14sp" />
+
+                            <Spinner
+                                android:id="@+id/spinner1"
+                                android:layout_weight="1"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:spinnerMode="dropdown" />
+                            <AutoCompleteTextView
+                                android:id="@+id/planets_spinner1"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Enter food"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
                         <!--
                             android:background="@android:drawable/btn_dropdown"
 -->
@@ -144,7 +175,7 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
-                        <Button
+                        <!--<Button
                             android:id="@+id/denyButton1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -162,7 +193,49 @@
 
                             android:onClick="disableButtons"
 
-                            android:text="Accept" />
+                            android:text="Accept" />-->
+                        <mehdi.sakout.fancybuttons.FancyButton
+                            android:id="@+id/denyButton1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            android:layout_margin="10dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+
+                            android:onClick="enableList"
+
+                            android:paddingTop="10dp"
+                            fancy:fb_borderWidth="1dp"
+                            fancy:fb_defaultColor="#E53935"
+                            fancy:fb_focusColor="#9bd823"
+                            fancy:fb_iconPosition="left"
+                            fancy:fb_radius="30dp"
+                            android:layout_weight="1"
+                            android:tag="1"
+                            fancy:fb_text="Deny"
+                            fancy:fb_textColor="#FFFFFF" />
+                        <mehdi.sakout.fancybuttons.FancyButton
+                            android:id="@+id/acceptButton1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            android:layout_margin="10dp"
+
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:paddingTop="10dp"
+                            fancy:fb_borderWidth="1dp"
+                            fancy:fb_defaultColor="#7CB342"
+                            fancy:fb_focusColor="#9bd823"
+                            fancy:fb_iconPosition="left"
+                            android:onClick="disableButtons"
+
+                            fancy:fb_radius="30dp"
+                            android:layout_weight="1"
+                            android:tag="1"
+                            fancy:fb_text="Accept"
+                            fancy:fb_textColor="#FFFFFF" />
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -198,32 +271,46 @@
                             android:padding="5dp"
                             app:srcCompat="@drawable/lunch" />
 
-                        <AutoCompleteTextView
-                            android:id="@+id/planets_spinner2"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Enter food"
-                            android:visibility="gone" />
-                        <Spinner
-                            android:id="@+id/spinner2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:spinnerMode="dropdown" />
-                        <!--<TextView
-                            android:id="@+id/foodText2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:layout_weight="1"
-                            android:text="Pepperoni Pizza"
-                            android:textColor="@android:color/background_light" />-->
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/textView8"
+                                android:layout_width="wrap_content"
+                                android:textColor="#ffff"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="Lunch"
+                                android:textSize="16sp" />
+                            <TextView
+                                android:id="@+id/title2"
+                                android:layout_width="wrap_content"
+                                android:textColor="#ffff"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
 
-                        <!--<Spinner
-                            android:id="@+id/planets_spinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone" />-->
+                                android:layout_height="wrap_content"
+                                android:text="Recommended Food Items"
+                                android:textSize="14sp" />
+
+                            <Spinner
+                                android:id="@+id/spinner2"
+                                android:layout_weight="1"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:spinnerMode="dropdown" />
+                            <AutoCompleteTextView
+                                android:id="@+id/planets_spinner2"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Enter food"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
@@ -231,8 +318,48 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
+                        <mehdi.sakout.fancybuttons.FancyButton
+                            android:id="@+id/denyButton2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            android:layout_margin="10dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:onClick="enableList"
 
-                        <Button
+                            android:paddingTop="10dp"
+                            fancy:fb_borderWidth="1dp"
+                            fancy:fb_defaultColor="#E53935"
+                            fancy:fb_focusColor="#9bd823"
+                            fancy:fb_iconPosition="left"
+                            fancy:fb_radius="30dp"
+                            android:layout_weight="1"
+                            android:tag="2"
+                            fancy:fb_text="Deny"
+                            fancy:fb_textColor="#FFFFFF" />
+                        <mehdi.sakout.fancybuttons.FancyButton
+                            android:id="@+id/acceptButton2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            android:layout_margin="10dp"
+
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:paddingTop="10dp"
+                            fancy:fb_borderWidth="1dp"
+                            fancy:fb_defaultColor="#7CB342"
+                            fancy:fb_focusColor="#9bd823"
+                            fancy:fb_iconPosition="left"
+                            android:onClick="disableButtons"
+
+                            fancy:fb_radius="30dp"
+                            android:layout_weight="1"
+                            android:tag="2"
+                            fancy:fb_text="Accept"
+                            fancy:fb_textColor="#FFFFFF" />
+                        <!--<Button
                             android:id="@+id/denyButton2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -249,7 +376,7 @@
                             android:tag="2"
                             android:onClick="disableButtons"
 
-                            android:text="Accept" />
+                            android:text="Accept" />-->
                     </LinearLayout>
 
                 </LinearLayout>
@@ -284,34 +411,94 @@
                             android:layout_height="81dp"
                             android:padding="5dp"
                             app:srcCompat="@drawable/dinner" />
-                        <AutoCompleteTextView
-                            android:id="@+id/planets_spinner3"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Enter food"
-                            android:visibility="gone" />
-                        <Spinner
-                            android:id="@+id/spinner3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:spinnerMode="dropdown" />
-                        <!--<TextView
-                            android:id="@+id/foodText3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:layout_weight="1"
-                            android:text="Lemon Pepper Chicken"
-                            android:textColor="@android:color/background_light" />-->
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/textView9"
+                                android:layout_width="wrap_content"
+                                android:textColor="#ffff"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="Dinner"
+                                android:textSize="16sp" />
+                            <TextView
+                                android:id="@+id/title3"
+                                android:layout_width="wrap_content"
+                                android:textColor="#ffff"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+
+                                android:layout_height="wrap_content"
+                                android:text="Recommended Food Items"
+                                android:textSize="14sp" />
+
+                            <Spinner
+                                android:id="@+id/spinner3"
+                                android:layout_weight="1"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:spinnerMode="dropdown" />
+                            <AutoCompleteTextView
+                                android:id="@+id/planets_spinner3"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Enter food"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
+                        <mehdi.sakout.fancybuttons.FancyButton
+                            android:id="@+id/denyButton3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            android:layout_margin="10dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:onClick="enableList"
 
-                        <Button
+                            android:paddingTop="10dp"
+                            fancy:fb_borderWidth="1dp"
+                            fancy:fb_defaultColor="#E53935"
+                            fancy:fb_focusColor="#9bd823"
+                            fancy:fb_iconPosition="left"
+                            fancy:fb_radius="30dp"
+                            android:layout_weight="1"
+                            android:tag="3"
+                            fancy:fb_text="Deny"
+                            fancy:fb_textColor="#FFFFFF" />
+                        <mehdi.sakout.fancybuttons.FancyButton
+                            android:id="@+id/acceptButton3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            android:layout_margin="10dp"
+
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:paddingTop="10dp"
+                            fancy:fb_borderWidth="1dp"
+                            fancy:fb_defaultColor="#7CB342"
+                            fancy:fb_focusColor="#9bd823"
+                            fancy:fb_iconPosition="left"
+                            android:onClick="disableButtons"
+
+                            fancy:fb_radius="30dp"
+                            android:layout_weight="1"
+                            android:tag="3"
+                            fancy:fb_text="Accept"
+                            fancy:fb_textColor="#FFFFFF" />
+                        <!--<Button
                             android:id="@+id/denyButton3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -328,7 +515,7 @@
                             android:tag="3"
                             android:onClick="disableButtons"
 
-                            android:text="Accept" />
+                            android:text="Accept" />-->
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
