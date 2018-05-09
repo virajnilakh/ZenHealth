@@ -2,7 +2,9 @@
 
 This is a simple sample that shows how to:
 
-- Create a Google App Engine service on Google Cloud Platform that loads a pickled scikit-learn model from Google Cloud Storage, and use it to serve prediction requests through Google Cloud Endpoints.  See the accompanying [blog post](https://cloud.google.com/community/tutorials/appengine-serve-machine-learning-model).
+- Create a Google App Engine service on Google Cloud Platform that loads a pickled scikit-learn model from Google Cloud Storage,
+and use it to serve ML requests through Google Cloud Endpoints.
+
 
 The benefits of this configuration include:
 
@@ -12,9 +14,11 @@ The benefits of this configuration include:
 
 ## Requirements
 
-- Install [Python](https://www.python.org/).  The version (2.7 or 3) used for local developement of the model should match the version used in the service, which is specified in the file `app.yaml`.
+- Install [Python](https://www.python.org/).  The version (2.7 or 3) used for local developement of the model should match
+    the version used in the service, which is specified in the file `app.yaml`.
 
-- Install [Google Cloud Platform SDK](https://cloud.google.com/sdk/).  The SDK includes the commandline tools `gcloud` for deploying the service and [`gsutil`](https://cloud.google.com/storage/docs/gsutil) for managing files on Cloud Storage.
+- Install [Google Cloud Platform SDK](https://cloud.google.com/sdk/).  The SDK includes the commandline tools `gcloud` for
+    deploying the service and [`gsutil`](https://cloud.google.com/storage/docs/gsutil) for managing files on Cloud Storage.
 
 - Create a Google Cloud Platform project which as the following products enabled:
 
@@ -26,24 +30,99 @@ The benefits of this configuration include:
 
 ## steps:
 
-- gcloud endpoints services deploy modelserve.yaml : to deploy gcloud endpoints
+Set up a Cloud Platform project, install required software, and create an App Engine app. See Before you begin.
+Download the sample code. See Getting the sample code.
+Configure the openapi-appengine.yaml file, which is used to configure Endpoints. See Configuring Endpoints.
+Deploy the Endpoints configuration to create a Cloud Endpoints service. See Deploying the Endpoints configuration.
+Create a backend to serve the API and deploy the API. See Deploying the API backend.
+Send a request to the API. See Sending a request to the API.
+Track API activity. See Tracking API activity.
+Avoid incurring charges to your Google Cloud Platform account. See Clean up.
+
+#---------------------------------------------------------------------------------------------------------------------------
+## Cloud SDK
+
+- open gcloud SDK
+- gcloud auth login
+-  gcloud config set project PROJECT_ID
+#---------------------------------------------------------------------------------------------------------------------------
+##endpoints
+- gcloud endpoints services deploy zenloopserve.yaml : to deploy gcloud endpoints
 
 - to get config ids from endpoints:
-    gcloud endpoints configs list --service="modelserve-dot-zenloop-202821.appspot.com"
+    gcloud endpoints configs list --service="zenloopserve-dot-zenloop-202821.appspot.com"
     => CONFIG_ID     SERVICE_NAME
-    2018-05-04r0  modelserve-dot-zenloop-202821.appspot.com
+    2018-05-04r0 *.appspot.com
+
+
+
+
+##Clean services
+
+- gcloud app services delete zenloopserve
+
+- gcloud endpoints services delete zenloopserve-dot-zenloop-202821.appspot.com
+
+tfidf , countvectorization
+
+
+#---------------------------------------------------------------------------------------------------------------------------
+##cloud storage
 
 - bucket_anme should be all small
     gsutil mb gs://BUCKET_NAME
     gsutil cp lr.pkl gs://BUCKET_NAME
 
+#---------------------------------------------------------------------------------------------------------------------------
+## App engine deployement
 
-##Clean services
+- gcloud app deploy
 
-- gcloud app services delete modelserve
+-  gcloud app browse
 
-- gcloud endpoints services delete modelserve-dot-zenloop-202821.appspot.com
+-gcloud app browse -s serve
 
-tfidf , countvectorization
+#---------------------------------------------------------------------------------------------------------------------------
+## run locally cloud SQL on gclous sdk
+
+- download cloud proxy (Right-click https://dl.google.com/cloudsql/cloud_sql_proxy_x64.exe and select "Save link as..." to
+    download the proxy, renaming it to cloud_sql_proxy.exe.)
+
+- /cloud_sql_proxy -instances=<INSTANCE_CONNECTION_NAME>=tcp:3306
+
+ - ./cloud_sql_proxy -instances=<INSTANCE_CONNECTION_NAME>=tcp:3306 \
+                  -credential_file=<PATH_TO_KEY_FILE> &
+#---------------------------------------------------------------------------------------------------------------------------
+## clooud SQL configuraiton
+
+- app.yaml file
+    env_variables:
+        # Replace user, password, database, and instance connection name with the values obtained
+        # when configuring your Cloud SQL instance.
+        SQLALCHEMY_DATABASE_URI: >-
+          mysql+pymysql://USER:PASSWORD@/DATABASE?unix_socket=/cloudsql/INSTANCE_CONNECTION_NAME
+
+      beta_settings:
+    cloud_sql_instances: INSTANCE_CONNECTION_NAME
+
+- requirements.txt
+
+    Flask==0.12.2
+    Flask-SQLAlchemy==2.3.2
+    gunicorn==19.7.1
+    PyMySQL==0.8.0
+
+- .py file
+
+    app.config['SQLALCHEMY_DATABASE_URI'] =  os.environ['SQLALCHEMY_DATABASE_URI']
+    #"mysql+pymysql://root:zenhealth@127.0.0.1:3306/zenuser"
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+
+
+
+
+
 
 

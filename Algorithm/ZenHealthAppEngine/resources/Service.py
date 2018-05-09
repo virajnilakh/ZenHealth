@@ -1,154 +1,18 @@
 from sklearn.externals import joblib
 import numpy as np
 import pandas as pd
-import resources.datamanager as datamanager
-
+#import resources.datamanager as datamanager
+from resources.connection import UserProfile
+from resources.connection import FoodConsumed
 from pandas.io.json import json_normalize
 import random
 import json
-from sklearn import preprocessing
-# Algorithm
-'''
-connect to user profile  and get diet 
-connect to db and get food details based on diet and time
-'''
+
 class Service():
 
     def test(self, userid, timeslot, bglevel, sugarConsumed):
         print("test recommednations")
 
-
-    def getFoodRecom(self,userid, timeslot, bglevel, sugarConsumed):
-        print("fetching recommednations")
-
-        #************************************ USER
-        user = datamanager.user_db.get('/userProfile', userid)
-        print(user)
-        # The blood glucose target range for diabetics, according to the American Diabetes Association, should be 5.0–7.2 mmol / l (90–130 mg / dL) before meals,
-        # and less than 10 mmol / L (180 mg / dL) after meals
-        if bglevel in np.arange(5.0, 7.2, 0.1):
-            print("this is normal range before meal..high cal meal")
-        if bglevel in np.arange(7.2, 9.9, 0.1):
-            print(" eat with less calories..medium")
-            isLowCateloryDiet = True
-        if bglevel > 10.0:
-            print('compulsory low caleroies')
-
-        diet = user.get('diet')
-        m = user.get('height') * 30.48 * 0.01
-        print(m)
-        kg = self.pound2kg(int(user.get('weight')))
-        print(kg)
-
-        bmi = round(kg / (m * m))
-        print("Your body mass index is: ", bmi)
-        if bmi <= 18.5:
-            print('Your BMI is', bmi, 'which means you are underweight.')
-
-        elif bmi > 18.5 and bmi < 25:
-            print('Your BMI is', bmi, 'which means you are normal.')
-
-        elif bmi >= 25 and bmi <= 30:
-            print('your BMI is', bmi, 'overweight.')
-            isLowCateloryDiet = True
-
-        elif bmi >= 30:
-            print('Your BMI is', bmi, 'which means you are obese.')
-            isLowCateloryDiet = True
-
-        else:
-            print('There is an error with your input')
-            print('Please check you have entered whole numbers\n'
-                  'and decimals were asked.')
-
-        #******************************* Food recommendation for user
-        result = {}
-        new_fdata = None
-        bf = []
-        bfCnt = 0
-        lunch = []
-        lunchCnt = 0
-        dinner = []
-        dinnerCnt = 0
-        foodlist = datamanager.food_db.get('/foodData', None, params={'Course' : 'Lunch'})
-        print(len(foodlist))
-        print(foodlist)
-        food_result = []
-       #  for key, value in foodlist.items():
-       #      food_result.append(value)
-       #
-       #  print(food_result)
-       #  df = pd.DataFrame.from_dict(json_normalize(food_result), orient='columns')
-       #  #print(df)
-       #  df.shape
-       #  df.to_csv("dataset/fooditem.csv", sep=',')
-       # # df = df.astype(float).fillna(0.0)
-       #  print(df)
-       #  df.shape
-        #filter fooditems for low sugar
-        if sugarConsumed > 11:
-            new_fdata = {k: v for k, v in foodlist.items() if v['sugarLevel'] == 'Low'}
-        elif sugarConsumed in range(7,11):
-            new_fdata = {k: v for k, v in foodlist.items() if v['sugarLevel'] == 'Medium'}
-        elif sugarConsumed in range(0,7):
-            new_fdata = {k: v for k, v in foodlist.items() if v['sugarLevel'] == 'High'}
-
-        print(new_fdata)
-        for f_id, f_info in foodlist.items():
-            # for key in f_info:
-            #     print(key + ':', f_info[key])
-            #print(f_info)
-
-            if 'Course' in f_info:
-                if 'Non Vegeterian'.lower() == f_info['allowedDiet'].lower():
-                    if timeslot in range(1, 12):
-                        if 'Lunch' in f_info['Course']:
-                            lunch.append(f_info['Name'])
-
-                            lunchCnt += 1
-                        if 'Breakfast and Brunch' in f_info['Course']:
-                            bf.append(f_info['Name'])
-                            bfCnt += 1
-                        if 'Main Dishes' in f_info['Course']:
-                            dinner.append(f_info['Name'])
-                            dinnerCnt += 1
-
-                    elif timeslot in range(13, 16):
-                        if 'Lunch' in f_info['Course']:
-                            lunch.append(f_info['Name'])
-                            lunchCnt += 1
-                        if 'Main Dishes' in f_info['Course']:
-                            dinner.append(f_info['Name'])
-                            dinnerCnt += 1
-
-
-                    elif timeslot in range(17, 23):
-                        if 'Main Dishes' in f_info['Course']:
-                            dinner.append(f_info['Name'])
-                            dinnerCnt += 1
-
-
-
-
-        print(len(lunch), len(bf), len(dinner))
-        if len(lunch) > 1:
-            result['Lunch'] = random.sample(lunch, 5)
-        elif len(lunch) < 5:
-            result['Lunch'] = lunch
-
-        if len(bf) < 5:
-            result['Breakfast'] = bf
-        elif len(bf) > 1:
-            result['Breakfast'] = random.sample(bf, 5)
-
-        if len(dinner) > 1 :
-            result['Dinner'] = random.sample(dinner, 5)
-        elif len(dinner)  < 5:
-            result['Breakfast'] = dinner
-
-        print(result)
-
-        return result
 
     def feet2m(f, i):
         print(f,i)
@@ -171,53 +35,78 @@ class Service():
         return bmi
 
 
-    def getUserDF(self,userid, timeslot, bglevel, sugarConsumed):
-        user = datamanager.user_db.get('/userProfile', userid)
+    def getUserDF(self,user, timeslot, bglevel, sugarConsumed):
+
         print("user for which recommendaations are provided:", user)
-        name = user.get('name')
-        gender = user.get('gender')
+        name = user.uname
+        gender = user.gender
         if(gender == 'male'):
             df_enc = 1
         else:
             df_enc = 0
 
-        bmi = self.getBMI( user.get('height'),int(user.get('weight')))
+        bmi = self.getBMI( user.height,int(user.weight))
         df = pd.DataFrame.from_dict(json_normalize({'bloodglucodelevel': bglevel, 'bmi': bmi,
                                                     'sugarcomsumed': sugarConsumed, 'gender': df_enc,
                                                     'label': 0}), orient='columns')
 
         return df
 
-    def getUserCategory(self,userid, timeslot, bglevel, sugarConsumed):
+    def getUserCategory(self,user, timeslot, bglevel, sugarConsumed):
 
         best_model = joblib.load('models/user_classifier.pkl')
 
-        df = self.getUserDF(userid, timeslot, bglevel, sugarConsumed)
+        df = self.getUserDF(user, timeslot, bglevel, sugarConsumed)
         predicted_category = best_model.predict(df)
 
         return predicted_category[0]
 
-    def getResults(self,userid, timeslot, bglevel, sugarConsumed):
+    def getResults(self,uname, timeslot, bglevel, sugarConsumed):
 
         #get user from mysql
-
-
-        user_cat = self.getUserCategory(userid, timeslot, bglevel, sugarConsumed)
+        print("input uname is ",uname)
+        u1 = UserProfile.query.get(uname)
+        user = UserProfile.query.filter_by(uname=uname).first()
+        if user is None:
+            user = UserProfile('arpita@gmail.com')
+            user.diet = 'Pescetarian'
+            user.gender ='male'
+            user.allergies = 'Dairy-Free'
+            user.name = 'arpita'
+            user.weight = 57
+            user.height = 5.4
+        print("user for which analysis :" , user)
+        user_cat = self.getUserCategory(user, timeslot, bglevel, sugarConsumed)
         print("user category found is:", user_cat)
 
-        #if user's history is not present in the database
+        #if user's history is not present in the database go to coldstart
 
-        foodlist = datamanager.food_db.get('/foodData', None, params={'Course': 'Lunch'})
+        # foodlist = datamanager.food_db.get('/foodData', None)
+        with open('dataset/fooditem.json') as json_data:
+            foodlist = json.load(json_data)
         print("food data size found:" ,len(foodlist))
         #print(foodlist)
         output = {}
         consumed_food = []
+        foodconsumed = FoodConsumed.query.filter_by(uname=uname).all()
+        cnt =0
+        if len(foodconsumed) == 0:
+            isColdStart = True
+        else:
+            isColdStart = False
+            for row in foodconsumed:
+                print(row.fooditem)
 
-        isColdStart = False
+                cnt =cnt+1
+                consumed_food.append(row.fooditem)
+                if cnt == 5:
+                    break
+
+
         if isColdStart == True:
             output = self.coldstart(foodlist,timeslot,"John",user_cat,"Non Vegeterian")
         else:
-            output = self.personalizedRecom(consumed_food,timeslot)
+            output = self.personalizedRecom(foodlist,consumed_food,timeslot)
         return output
 
     def createFoodDF(self, user_cat , foodlist):
@@ -249,7 +138,7 @@ class Service():
         out = filtered_data.to_json(orient='records')[1:-1].replace('},{', '} {')
         return out
 
-    def personalizedRecom(self, already_consumed_fooditems, timeslot):
+    def personalizedRecom(self, foodlist, already_consumed_fooditems, timeslot):
 
         lunchCnt = 0
         bfCnt =0
@@ -284,32 +173,34 @@ class Service():
         print(rec)
         for k in rec:
             row = df.loc[df['e_Name'] == k]
-            print(row['Name'].values[0], " : ", row['Nutrients.Sugar'].values[0])
-            if timeslot in range(1, 12):
-                if 'Lunch' in row['Course'].values[0]:
-                    lunch.append(row['Name'].values[0])
+            print(row)
+            if 'Nutrients.Sugar' in row:
+                print(row['Name'].values[0], " : ", row['Nutrients.Sugar'].values[0].astype(str))
+                if timeslot in range(1, 12):
+                    if 'Lunch' in row['Course'].values[0]:
+                        lunch.append(row['Name'].values[0] +" : "+  row['Nutrients.Sugar'].values[0].astype(str))
 
-                    lunchCnt += 1
-                if 'Breakfast and Brunch' in row['Course'].values[0]:
-                    bf.append(row['Name'].values[0])
-                    bfCnt += 1
-                if 'Main Dishes' in row['Course'].values[0]:
-                    dinner.append(row['Name'].values[0])
-                    dinnerCnt += 1
+                        lunchCnt += 1
+                    if 'Breakfast and Brunch' in row['Course'].values[0]:
+                        bf.append(row['Name'].values[0] +" : "+  row['Nutrients.Sugar'].values[0].astype(str))
+                        bfCnt += 1
+                    if 'Main Dishes' in row['Course'].values[0]:
+                        dinner.append(row['Name'].values[0] +" : "+  row['Nutrients.Sugar'].values[0].astype(str))
+                        dinnerCnt += 1
 
-            elif timeslot in range(13, 16):
-                if 'Lunch' in row['Course'].values[0]:
-                    lunch.append(row['Name'].values[0])
-                    lunchCnt += 1
-                if 'Main Dishes' in row['Course'].values[0]:
-                    dinner.append(row['Name'].values[0])
-                    dinnerCnt += 1
+                elif timeslot in range(13, 16):
+                    if 'Lunch' in row['Course'].values[0]:
+                        lunch.append(row['Name'].values[0] +" : "+  row['Nutrients.Sugar'].values[0].astype(str))
+                        lunchCnt += 1
+                    if 'Main Dishes' in row['Course'].values[0]:
+                        dinner.append(row['Name'].values[0] +" : "+  row['Nutrients.Sugar'].values[0].astype(str))
+                        dinnerCnt += 1
 
 
-            elif timeslot in range(17, 23):
-                if 'Main Dishes' in row['Course'].values[0]:
-                    dinner.append(row['Name'].values[0])
-                    dinnerCnt += 1
+                elif timeslot in range(17, 23):
+                    if 'Main Dishes' in row['Course'].values[0]:
+                        dinner.append(row['Name'].values[0] +" : "+  row['Nutrients.Sugar'].values[0].astype(str))
+                        dinnerCnt += 1
 
         print(len(lunch), len(bf), len(dinner))
         if len(lunch) > 5:
@@ -346,35 +237,37 @@ class Service():
             level = "High"
 
         for f_id, f_info in foodlist.items():
+            print(f_info)
+            if 'Nutrients'in f_info:
+                if 'Course' in f_info:
+                    if diet.lower() == f_info['allowedDiet'].lower():
+                        if level.lower() == f_info['sugarLevel'].lower():
+                            if timeslot in range(1, 12):
+                                if 'Lunch' in f_info['Course']:
+                                    lunch.append(f_info['Name']  +" : "+ f_info['Nutrients']['Sugar'].replace("grams" ,""))
 
-            if 'Course' in f_info:
-                if diet.lower() == f_info['allowedDiet'].lower():
-                    if level.lower() == f_info['sugarLevel'].lower():
-                        if timeslot in range(1, 12):
-                            if 'Lunch' in f_info['Course']:
-                                lunch.append(f_info['Name'])
+                                    lunchCnt += 1
+                                if 'Breakfast and Brunch' in f_info['Course']:
+                                    bf.append(f_info['Name'] +" : "+ f_info['Nutrients']['Sugar'].replace("grams" ,""))
+                                    bfCnt += 1
+                                if 'Main Dishes' in f_info['Course']:
 
-                                lunchCnt += 1
-                            if 'Breakfast and Brunch' in f_info['Course']:
-                                bf.append(f_info['Name'])
-                                bfCnt += 1
-                            if 'Main Dishes' in f_info['Course']:
-                                dinner.append(f_info['Name'])
-                                dinnerCnt += 1
+                                    dinner.append(f_info['Name'] +" : "+ f_info['Nutrients']['Sugar'].replace("grams" ,""))
+                                    dinnerCnt += 1
 
-                        elif timeslot in range(13, 16):
-                            if 'Lunch' in f_info['Course']:
-                                lunch.append(f_info['Name'])
-                                lunchCnt += 1
-                            if 'Main Dishes' in f_info['Course']:
-                                dinner.append(f_info['Name'])
-                                dinnerCnt += 1
+                            elif timeslot in range(13, 16):
+                                if 'Lunch' in f_info['Course']:
+                                    lunch.append(f_info['Name'] +" : "+ f_info['Nutrients']['Sugar'].replace("grams" ,""))
+                                    lunchCnt += 1
+                                if 'Main Dishes' in f_info['Course']:
+                                    dinner.append(f_info['Name'] +" : "+ f_info['Nutrients']['Sugar'].replace("grams" ,""))
+                                    dinnerCnt += 1
 
 
-                        elif timeslot in range(17, 23):
-                            if 'Main Dishes' in f_info['Course']:
-                                dinner.append(f_info['Name'])
-                                dinnerCnt += 1
+                            elif timeslot in range(17, 23):
+                                if 'Main Dishes' in f_info['Course']:
+                                    dinner.append(f_info['Name'] +" : "+ f_info['Nutrients']['Sugar'].replace("grams" ,""))
+                                    dinnerCnt += 1
 
         print(len(lunch), len(bf), len(dinner))
         if len(lunch) > 1:
