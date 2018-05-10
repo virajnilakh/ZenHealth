@@ -89,7 +89,7 @@ public class ActivityFragment extends Fragment {
         xAxis.setDrawAxisLine(false);
         xAxis.setTextColor(Color.LTGRAY);
         xAxis.setTextSize(13f);
-        xAxis.setLabelCount(5);
+        xAxis.setLabelCount(7);
         xAxis.setCenterAxisLabels(true);
         xAxis.setGranularity(1f);
 
@@ -107,11 +107,12 @@ public class ActivityFragment extends Fragment {
 
         // THIS IS THE ORIGINAL DATA YOU WANT TO PLOT
         final List<Data> data = new ArrayList<>();
-        data.add(new Data(0.5f, 124.1f, "12-29"));
-        data.add(new Data(1.5f, 88.5f, "12-30"));
-        data.add(new Data(2.5f, 128.1f, "12-31"));
-        data.add(new Data(3.5f, 82.3f, "01-01"));
-        data.add(new Data(4.5f, 98.1f, "01-02"));
+        data.add(new Data(0.5f, 5.85f, "May,9th"));
+        data.add(new Data(1.5f, 6.5f, "May,8th"));
+        data.add(new Data(2.5f, 5.85f, "May,7th"));
+        data.add(new Data(3.5f, 5.8f, "May,6th"));
+        data.add(new Data(4.5f, 5.85f, "May,5th"));
+
 
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
@@ -131,11 +132,9 @@ public class ActivityFragment extends Fragment {
         l.setXEntrySpace(4f);
 
         mChart.animateXY(1000, 1000);
-        createAndroidElement(v);
-        createAndroidElement(v);
-        createAndroidElement(v);
-        createAndroidElement(v);
-        createAndroidElement(v);
+        for(int i=0;i<5;i++){
+            createAndroidElement(v,data.get(i).yValue,data.get(i).xAxisValue);
+        }
         return v;
     }
     private  class Data {
@@ -214,7 +213,7 @@ public class ActivityFragment extends Fragment {
             return mFormat.format(value);
         }
     }
-    public void createAndroidElement(View v){
+    public void createAndroidElement(View v,float value,String desc){
         LinearLayout parent = (LinearLayout) v.findViewById(R.id.parentLayout);
 
         LinearLayout.LayoutParams cardParams =
@@ -241,7 +240,7 @@ public class ActivityFragment extends Fragment {
                         LinearLayout.LayoutParams.WRAP_CONTENT);
         textParams.setMargins(50,50,50,50);
         TextView text=new TextView(getContext());
-        text.setText("22nd January \nBlood Glucose Level: 100");
+        text.setText(desc+"\nBlood Glucose Level: "+value);
         text.setTextColor(Color.WHITE);
         text.setTypeface(null,Typeface.BOLD);
 

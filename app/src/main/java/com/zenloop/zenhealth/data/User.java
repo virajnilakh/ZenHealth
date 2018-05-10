@@ -11,6 +11,16 @@ public class User extends RealmObject {
     @PrimaryKey
     private String username=null;
 
+    /*public boolean isBgl() {
+        return bgl;
+    }
+
+    public void setBgl(boolean bgl) {
+        this.bgl = bgl;
+    }
+
+    private boolean bgl=false;*/
+
     public User() {
     }
 

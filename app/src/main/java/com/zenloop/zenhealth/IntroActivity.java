@@ -14,12 +14,23 @@ import android.os.Bundle;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
+import com.zenloop.zenhealth.data.User;
+
+import io.realm.Realm;
 
 public class IntroActivity extends AppIntro {
+    private Realm realm;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Realm.init(this);
+        realm=Realm.getDefaultInstance();
+        User user=realm.where(User.class).findFirst();
+        if(user!=null){
+            Intent myIntent = new Intent(IntroActivity.this, Navigation.class);
+            startActivity(myIntent);
+        }
         // Note here that we DO NOT use setContentView();
 
         // Add your slide fragments here.
@@ -29,33 +40,28 @@ public class IntroActivity extends AppIntro {
         addSlide(thirdFragment);
         addSlide(fourthFragment);*/
         SliderPage sliderPage1 = new SliderPage();
-        sliderPage1.setTitle("Welcome!");
-        sliderPage1.setDescription("This is a demo of the AppIntro library.");
-        sliderPage1.setImageDrawable(R.drawable.graph);
+        sliderPage1.setTitle("Are you a diabetic?");
+        sliderPage1.setDescription("Do you think twice before deciding what to eat?");
+        sliderPage1.setImageDrawable(R.drawable.dinner);
         sliderPage1.setBgColor(Color.TRANSPARENT);
 
 
         addSlide(AppIntroFragment.newInstance(sliderPage1));
         SliderPage sliderPage2 = new SliderPage();
-        sliderPage2.setTitle("Clean App Intros");
-        sliderPage2.setDescription("This library offers developers the ability to add clean app intros at the start of their apps.");
-        sliderPage2.setImageDrawable(R.drawable.image);
+        sliderPage2.setTitle("You are in the right place!");
+        sliderPage2.setDescription("Just register into our app and enter your blood glucose level.");
+        sliderPage2.setImageDrawable(R.drawable.lunch);
         sliderPage2.setBgColor(Color.TRANSPARENT);
         addSlide(AppIntroFragment.newInstance(sliderPage2));
 
         SliderPage sliderPage3 = new SliderPage();
-        sliderPage3.setTitle("Simple, yet Customizable");
-        sliderPage3.setDescription("The library offers a lot of customization, while keeping it simple for those that like simple.");
-        sliderPage3.setImageDrawable(R.drawable.dinner);
+        sliderPage3.setTitle("And we will do that for you!");
+        sliderPage3.setDescription("We will provide you food recommendations and monitor the blood glucose level.");
+        sliderPage3.setImageDrawable(R.drawable.graph);
         sliderPage3.setBgColor(Color.TRANSPARENT);
         addSlide(AppIntroFragment.newInstance(sliderPage3));
 
-        SliderPage sliderPage4 = new SliderPage();
-        sliderPage4.setTitle("Explore");
-        sliderPage4.setDescription("Feel free to explore the rest of the library demo!");
-        sliderPage4.setImageDrawable(R.drawable.breakfast);
-        sliderPage4.setBgColor(Color.TRANSPARENT);
-        addSlide(AppIntroFragment.newInstance(sliderPage4));
+
         // OPTIONAL METHODS
         // Override bar/separator color.
         setBarColor(Color.parseColor("#3F51B5"));
