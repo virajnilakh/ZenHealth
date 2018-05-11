@@ -6,7 +6,7 @@ import os
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']  #mysql+pymysql://user:pwd127.0.0.1:3306/db"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://u:p@h/d"
     #os.environ['SQLALCHEMY_DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
@@ -15,6 +15,7 @@ db = SQLAlchemy(app)
 
 
 class UserProfile(db.Model):
+
     __tablename__ = 'userProfile'
 
     uname = db.Column(db.String(100), primary_key=True)

@@ -34,12 +34,12 @@ env_variables:
     # Replace user, password, database, and instance connection name with the values obtained
     # when configuring your Cloud SQL instance.
     SQLALCHEMY_DATABASE_URI: >-
-     mysql+pymysql://USER:PASSWORD@/DATABASE?unix_socket=/cloudsql/INSTANCE_CONNECTION_NAME
+      mysql+pymysql://user:pws@/user?unix_socket=/cloudsql/instance
     MODEL_BUCKET: zenloop_classifier
     CLASSIFIER_FILENAME: models/user_classifier.pkl
     ENC_FILENAME: dataset/encoded_fooditem.csv
     SIMILARITY_FILENAME: models/item_similarity.pkl
 
 beta_settings:
-      cloud_sql_instances: INSTANCE_CONNECTION_NAME
+      cloud_sql_instances: instance
 

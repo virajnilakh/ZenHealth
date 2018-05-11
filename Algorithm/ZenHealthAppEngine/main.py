@@ -11,6 +11,8 @@ from resources.Service import Service\
 import os
 import logging
 from resources.connection import app
+from google.cloud import storage
+import pickle
 
 # app = Flask(__name__)
 # app.debug = True
@@ -19,10 +21,11 @@ service = ZenhealthService()
 
 
 
-# USER_MODEL_BUCKET = os.environ['MODEL_BUCKET']
-# USER_MODEL_FILENAME = os.environ['MODEL_FILENAME']
-# USER_MODEL = None
-# RECOMMENDER_MODEL = None
+MODEL_BUCKET = os.environ['MODEL_BUCKET']
+USER_MODEL_FILENAME = os.environ['MODEL_FILENAME']
+RECOMMENDER_MODEL_FILENAME = os.environ['MODEL_FILENAME']
+USER_MODEL = None
+RECOMMENDER_MODEL = None
 
 
 # API list
@@ -33,34 +36,36 @@ GET     /v1/zenhealth/ping
 
 '''
 
-# @app.route("/v1/zenloop/ping", methods=['GET'])
-# def testPing():
-#     print("ping successfull")
-#     return json.dumps({'status': 'ok', 'message': 'Zenhealth API service :v1'})
-#
-# @app.route("/v1/zenloop/test", methods=['GET'])
-# def test():
-#
-#     args = request.args
-#     print(args)  # For debugging
-#     userid = args['userid']
-#     timeslot = int(args['timeslot'])
-#     bglevel = float(args['bglevel'])
-#     sugarConsumed = float(args['sugarConsumed'])
-#     recommendations = service.test(userid, timeslot, bglevel, sugarConsumed)
-#     resp = Response(json.dumps(recommendations))
-#         # resp.headers['Access-Control-Allow-Origin'] = '*'
-#     resp.headers['Content-Type'] = 'app/json'
-#     return resp
+@app.before_first_request
+def _load_models():
+    global USER_MODEL
+    global RECOMMENDER_MODEL
+    client = storage.Client()
+    bucket = client.get_bucket(MODEL_BUCKET)
+    blob = bucket.get_blob(USER_MODEL_FILENAME)
+    user = blob.download_as_string()
+
+    # Note: Change the save/load mechanism according to the framework
+    # used to build the model.
+    USER_MODEL = pickle.loads(user)
+    blob = bucket.get_blob(RECOMMENDER_MODEL_FILENAME)
+    recom = blob.download_as_string()
+
+    # Note: Change the save/load mechanism according to the framework
+    # used to build the model.
+    RECOMMENDER_MODEL = pickle.loads(recom)
 
 
 def getAPP():
     return app
 
+@app.route("/ping", methods=['GET'])
+def testPing():
+    print("ping successfull")
+    return json.dumps({'status': 'ok', 'message': 'Zenhealth API service :v1'})
 
 @app.route("/recommendFood", methods=['POST'])
 def getFoodRecommendations():
-
 
     uname = request.get_json()['uname']
     timeslot = int(request.get_json()['timeslot'])
@@ -72,6 +77,20 @@ def getFoodRecommendations():
     resp.headers['Content-Type'] = 'app/json'
     return resp
 
+@app.route("/getFoodRecommendations", methods=['GET'])
+def foodRecommendations():
+
+    args = request.args
+    print(args)  # For debugging
+    uname = args['uname']
+    timeslot = int(args['timeslot'])
+    bglevel = float(args['bglevel'])
+    sugarConsumed = float(args['sugarConsumed'])
+    recommendations = service.getResults(uname, timeslot, bglevel, sugarConsumed)
+    resp = Response(json.dumps(recommendations))
+    # resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers['Content-Type'] = 'app/json'
+    return resp
 
 @app.errorhandler(500)
 def server_error(e):
@@ -84,4 +103,4 @@ def server_error(e):
 if __name__ == "__main__":
     print("running on 0.0.0.0")
 
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)

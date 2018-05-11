@@ -145,10 +145,13 @@ print(predicted)
 # In[94]:
 
 import pickle
-s = pickle.dumps(best_model)
+filename = 'user_classifier_model.sav'
+pickle.dump(best_model, open(filename, 'wb'))
 
 
 # In[95]:
+
+
 
 from sklearn.externals import joblib
 joblib.dump(best_model, 'user_classifier.pkl')
@@ -158,10 +161,10 @@ joblib.dump(best_model, 'user_classifier.pkl')
 
 best_model_pkl = joblib.load('user_classifier.pkl')
 
-
+loaded_model = pickle.load(open(filename, 'rb'))
 # In[97]:
 
-predicted = best_model_pkl.predict(df)
+predicted = loaded_model.predict(df)
 
 print(predicted)
 

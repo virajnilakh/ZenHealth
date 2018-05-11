@@ -115,9 +115,27 @@ tfidf , countvectorization
 - .py file
 
     app.config['SQLALCHEMY_DATABASE_URI'] =  os.environ['SQLALCHEMY_DATABASE_URI']
-    #"mysql+pymysql://root:zenhealth@127.0.0.1:3306/zenuser"
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+#---------------------------------------------------------------------------------------------------------------------------
+## clooud compute engine
+
+- sudo apt-get install python-setuptools
+
+- sudo easy_install flask markdown
+
+- sudo python -m SimpleHTTPServer
+
+- sudo apt-get install supervisor
+
+- sudo service supervisor status
+
+- sudo supervisorctl reread
+
+-sudo supervisorctl update
+
+-sudo supervisorctl restart uni_app
 
 
 
