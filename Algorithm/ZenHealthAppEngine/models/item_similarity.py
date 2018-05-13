@@ -4,23 +4,10 @@
 # In[11]:
 
 #Import Library
-from time import time
-import matplotlib.pyplot as plt
 
-from sklearn.naive_bayes import GaussianNB
-from sklearn import svm
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors.nearest_centroid import NearestCentroid
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 
 import pandas as pd
-import numpy as np
-import scipy as sp
 
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
 
 
@@ -112,7 +99,7 @@ from sklearn.neighbors import NearestNeighbors
 
 
 # Next we will instantiate a nearest neighbor object, and call it nbrs. Then we will fit it to dataset X.
-model = NearestNeighbors(n_neighbors=5, algorithm='ball_tree').fit(df_encoded)
+model = NearestNeighbors(n_neighbors=10, algorithm='ball_tree').fit(df_encoded)
 
 # Let's find the k-neighbors of each point in object X. To do that we call the kneighbors() function on object X.
 distances, indices = model.kneighbors(df_encoded)

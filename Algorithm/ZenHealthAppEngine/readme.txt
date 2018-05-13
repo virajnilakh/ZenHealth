@@ -127,15 +127,77 @@ tfidf , countvectorization
 
 - sudo python -m SimpleHTTPServer
 
+# supervisor
+
 - sudo apt-get install supervisor
 
 - sudo service supervisor status
 
+- sudo cp uni.conf /etc/supervisor/conf.d
+
 - sudo supervisorctl reread
 
--sudo supervisorctl update
+- sudo supervisorctl update
 
--sudo supervisorctl restart uni_app
+- sudo supervisorctl restart uni_app
+
+- whereis gunicorn
+
+# virualenv
+
+-sudo pip3 install virtualenv
+
+- virtualenv venv
+
+#gunicorn for python 3 support
+- pip uninstall gunicorn
+
+-pip3 install gunicorn
+
+# create virutal env
+- sudo pip insatll virtualenv
+
+- mkdir myproj
+
+-cd myproj
+
+-virtualenv myprojenv
+
+-source myprojenv/bin/activate
+
+# using uwsgi for deploying flask
+
+- pip install uwsgi flask
+
+-nanao /myproj/wsgi.py
+
+-code ::
+from myproj import app
+
+if __name__ == "__main__"
+    app.run()
+
+- uwsgi --socket 0.0.0.0:9090 --protocol=http -w wsgi
+
+- create uwsgi file
+
+nanao /myproj/myproj.ini
+
+[uwsgi]
+modeule = wsgi
+master = true
+processes = 5
+
+socket =myproj..sock
+chmod-socket = 660
+vacuu = true
+
+- create and start script
+
+sudo nano /etc/init/myproj.conf
+
+
+
 
 
 

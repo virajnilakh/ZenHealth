@@ -10,6 +10,13 @@ import json
 
 class Service():
 
+    def load_models(self):
+        global USER_CLASSIFIER_MODEL
+        global RECOMMENDER_MODEL
+
+        USER_CLASSIFIER_MODEL = joblib.load('models/user_classifier.pkl')
+        RECOMMENDER_MODEL = joblib.load('models/item_similarity.pkl')
+
     def test(self, userid, timeslot, bglevel, sugarConsumed):
         print("test recommednations")
 
@@ -54,10 +61,10 @@ class Service():
 
     def getUserCategory(self,user, timeslot, bglevel, sugarConsumed):
 
-        best_model = joblib.load('models/user_classifier.pkl')
+        #best_model = joblib.load('models/user_classifier.pkl')
 
         df = self.getUserDF(user, timeslot, bglevel, sugarConsumed)
-        predicted_category = best_model.predict(df)
+        predicted_category = USER_CLASSIFIER_MODEL.predict(df)
 
         return predicted_category[0]
 
@@ -148,7 +155,7 @@ class Service():
         dinner = []
         result = {}
         df = pd.read_csv('dataset/encoded_fooditem.csv')
-        model = joblib.load('models/item_similarity.pkl')
+        #model = joblib.load('models/item_similarity.pkl')
 
         already_consumed_fooditems = ['INDIAN CHOLE', 'Grilled Marinated Flank Steak']
         rec = []
@@ -165,7 +172,7 @@ class Service():
             match.append(row['e_sugarLevel'].values[0])
             # print(match)
             # fooditem e_infredients e_Name e_Nutrients.Calories e_Nutrients.Carbohydrates e_Nutrients.Sugar e_sugarLevel
-            u, i = model.kneighbors([match])
+            u, i =RECOMMENDER_MODEL.kneighbors([match])
             rec = rec + list(i[0])
             print(list(i[0]))
             print('**********')

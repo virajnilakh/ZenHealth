@@ -21,12 +21,12 @@ service = ZenhealthService()
 
 
 
-MODEL_BUCKET = os.environ['MODEL_BUCKET']
-USER_MODEL_FILENAME = os.environ['MODEL_FILENAME']
-RECOMMENDER_MODEL_FILENAME = os.environ['MODEL_FILENAME']
-USER_MODEL = None
-RECOMMENDER_MODEL = None
-
+# MODEL_BUCKET = os.environ['MODEL_BUCKET']
+# USER_MODEL_FILENAME = os.environ['MODEL_FILENAME']
+# RECOMMENDER_MODEL_FILENAME = os.environ['MODEL_FILENAME']
+# USER_MODEL = None
+# RECOMMENDER_MODEL = None
+#
 
 # API list
 
@@ -35,26 +35,29 @@ GET     /v1/zenhealth/ping
         Ping the applciation to test its access
 
 '''
-
 @app.before_first_request
 def _load_models():
-    global USER_MODEL
-    global RECOMMENDER_MODEL
-    client = storage.Client()
-    bucket = client.get_bucket(MODEL_BUCKET)
-    blob = bucket.get_blob(USER_MODEL_FILENAME)
-    user = blob.download_as_string()
+    service.load_models()
 
-    # Note: Change the save/load mechanism according to the framework
-    # used to build the model.
-    USER_MODEL = pickle.loads(user)
-    blob = bucket.get_blob(RECOMMENDER_MODEL_FILENAME)
-    recom = blob.download_as_string()
-
-    # Note: Change the save/load mechanism according to the framework
-    # used to build the model.
-    RECOMMENDER_MODEL = pickle.loads(recom)
-
+# @app.before_first_request
+# def _load_models():
+#     global USER_MODEL
+#     global RECOMMENDER_MODEL
+#     client = storage.Client()
+#     bucket = client.get_bucket(MODEL_BUCKET)
+#     blob = bucket.get_blob(USER_MODEL_FILENAME)
+#     user = blob.download_as_string()
+#
+#     # Note: Change the save/load mechanism according to the framework
+#     # used to build the model.
+#     USER_MODEL = pickle.loads(user)
+#     blob = bucket.get_blob(RECOMMENDER_MODEL_FILENAME)
+#     recom = blob.download_as_string()
+#
+#     # Note: Change the save/load mechanism according to the framework
+#     # used to build the model.
+#     RECOMMENDER_MODEL = pickle.loads(recom)
+#
 
 def getAPP():
     return app
